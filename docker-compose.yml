@@ -1,0 +1,43 @@
+# Services
+services:
+  # Server service
+  server1:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend1
+    ports:
+      - "5000:5000"
+    env_file: ./.env
+
+  server2:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend2
+    ports:
+      - "5001:5000"
+    env_file: ./.env
+
+  # Client service
+  client1:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+
+    container_name: frontend1
+    ports:
+      - "8080:80"
+    depends_on:
+      - server1
+
+  client2:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+
+    container_name: frontend2
+    ports:
+      - "8081:80"
+    depends_on:
+      - server2
