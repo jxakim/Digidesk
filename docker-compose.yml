@@ -1,43 +1,30 @@
-# Services
+version: "3"
 services:
-  # Server service
-  server1:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: backend1
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: backend
     ports:
       - "5000:5000"
-    env_file: ./.env
-
-  server2:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: backend2
-    ports:
-      - "5001:5000"
-    env_file: ./.env
-
-  # Client service
-  client1:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-
-    container_name: frontend1
-    ports:
-      - "8080:80"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mern
     depends_on:
-      - server1
+      - mongo
 
-  client2:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-
-    container_name: frontend2
+  frontend:
+    build: ./frontend
+    container_name: frontend
     ports:
-      - "8081:80"
+      - "80:80"
     depends_on:
-      - server2
+      - backend
+
+volumes:
+  mongo-data:
