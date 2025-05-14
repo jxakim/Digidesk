@@ -1,0 +1,48 @@
+#navbar {
+  overflow: hidden;
+  padding: 50px 10px;
+  transition: 0.4s;
+  width: 100%;
+  top: 0;
+  z-index: 99;
+}
+
+#navbar a {
+  float: left;
+  position: relative;
+  color: #000000;
+  text-align: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-size: 18px; 
+  font-weight: lighter;
+  line-height: 20px;
+  border-radius: 4px;
+}
+
+#navbar #logo {
+  font-size: 35px;
+  font-weight: bolder;
+  transition: 0.1s;
+  text-transform: uppercase;
+}
+
+
+/* Hover effect */
+#navbar-right a::after {
+  content: '';
+  position: absolute;
+  height: 1px;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  background: rgb(0, 0, 0);
+  transition: width .15s ease-out;
+  transform: translateX(-50%);
+}
+
+#navbar-right a:hover::after {
+  width: 55%;
+  left: 50%;
+  transform: translateX(-50%);
+}

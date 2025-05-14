@@ -12,7 +12,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>This is a test</h1>
+        <h1>Greveskogen IT Infoside</h1>
+        <p>Denne siden er en info side for IT-Servicedesken på Greveskogen VGS.</p>
+
         <p>{message}</p>
       </header>
     </div>

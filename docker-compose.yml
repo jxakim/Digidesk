@@ -8,9 +8,9 @@ services:
     volumes:
       - mongo-data:/data/db
 
-  backend:
+  backend1:
     build: ./backend
-    container_name: backend
+    container_name: backend1
     ports:
       - "5000:5000"
     environment:
@@ -18,13 +18,31 @@ services:
     depends_on:
       - mongo
 
-  frontend:
+  backend2:
+    build: ./backend
+    container_name: backend2
+    ports:
+      - "5001:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mern
+    depends_on:
+      - mongo
+
+  frontend1:
     build: ./frontend
-    container_name: frontend
+    container_name: frontend1
     ports:
       - "80:80"
     depends_on:
-      - backend
+      - backend1
+      
+  frontend2:
+    build: ./frontend
+    container_name: frontend2
+    ports:
+      - "81:80"
+    depends_on:
+      - backend2
 
 volumes:
   mongo-data:
