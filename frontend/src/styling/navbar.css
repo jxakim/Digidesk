@@ -1,32 +1,50 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+
 #navbar {
-  overflow: hidden;
-  padding: 50px 10px;
-  transition: 0.4s;
-  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Push logo left, links right */
+  align-items: center; /* Vertically center logo and links */
+  padding: 35px 300px; /* Adjust padding for a tighter layout */
+  position: sticky;
   top: 0;
   z-index: 99;
+  background: white;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  user-select: none;
+}
+
+#logo {
+  display: flex;
+  align-items: center;
+  font-size: 48px; /* Slightly larger text */
+  font-weight: normal;
+  cursor: pointer;
+}
+
+#logo img {
+  height: 100px; /* Bigger logo image */
+  margin-right: 35px;
+}
+
+#navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 25px; /* Space between nav links */
 }
 
 #navbar a {
-  float: left;
-  position: relative;
-  color: #000000;
-  text-align: center;
-  padding: 12px 20px;
+  font-family: "inter";
+  font-weight: 800;
+  color: #000;
   text-decoration: none;
-  font-size: 18px; 
+  font-size: 24px;
   font-weight: lighter;
-  line-height: 20px;
-  border-radius: 4px;
+  position: relative;
+  padding: 10px;
 }
-
-#navbar #logo {
-  font-size: 35px;
-  font-weight: bolder;
-  transition: 0.1s;
-  text-transform: uppercase;
-}
-
 
 /* Hover effect */
 #navbar-right a::after {
@@ -43,6 +61,4 @@
 
 #navbar-right a:hover::after {
   width: 55%;
-  left: 50%;
-  transform: translateX(-50%);
 }

@@ -1,0 +1,20 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.card {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px 40px;
+    width: 300px;
+    border-radius: 10px;
+    background-color: #f8f8f8;
+    font-weight: 100;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.card:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #f1f1f1;
+}

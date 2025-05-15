@@ -1,0 +1,23 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.cases-container {
+    padding: 30px 200px;
+    justify-content: center;
+}
+
+.header {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: left;
+    margin: 50px 0;
+    user-select: none;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 70px;
+}

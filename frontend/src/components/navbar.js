@@ -4,13 +4,12 @@ import '../styling/navbar.css';
 function Navbar() {
   return (
     <div id="navbar">
-        <a href="/" id="logo">Navbar</a>
+        <div id="logo"><img src="vfk.png" alt="logo"/><span>Digital Servicedesk</span></div>
 
         <div id="navbar-right">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Store</a>
-            <a href="#">Contact</a>
+            <a href="#">Problemer</a>
+            <a href="#">Åpningstider</a>
+            <a href="#">Kontakt oss</a>
         </div>
     </div>
   );
