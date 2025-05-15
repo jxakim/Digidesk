@@ -24,6 +24,12 @@ body {
   cursor: pointer;
 }
 
+#logo:hover {
+  text-decoration: none;
+  color: #363636;
+  
+}
+
 #logo img {
   height: 100px; /* Bigger logo image */
   margin-right: 35px;
