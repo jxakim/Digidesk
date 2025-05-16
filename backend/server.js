@@ -9,6 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Connect to MongoDB
 try {
   mongoose.connect(process.env.DATABASE_URL);
@@ -18,9 +19,9 @@ try {
   throw err;
 }
 
+
 // Define the Case schema
-app.get('/cases', async (req, res) => {
-  console.log('GET /cases hit');
+app.get('/api/cases', async (req, res) => {
   const allCases = await Case.find({});
   res.json(allCases);
 });

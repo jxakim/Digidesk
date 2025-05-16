@@ -6,7 +6,7 @@ function Case() {
 
   const [cases, setCases] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:5000/cases')
+    fetch('/api/cases')
       .then(response => response.json())
       .then(data => {
         setCases(data);
