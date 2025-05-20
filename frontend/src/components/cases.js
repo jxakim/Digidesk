@@ -19,7 +19,6 @@ function Case() {
   return (
     <div className="cases-container">
       <h2 className="header">Kjente hendvendelser</h2>
-      <h1>TEST 3 YEAHH</h1>
       <div className="card-container">
         { 
           cases.map((caseItem) => (
