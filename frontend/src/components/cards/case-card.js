@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import '../styling/card.css';
+import '../../styling/case-card.css';
 
 function Card(props) {
 

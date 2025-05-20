@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Card from './case-card';
+import CaseCard from './cards/case-card';
 import '../styling/cases.css';
 
-function Case() {
+function Cases() {
 
   const [cases, setCases] = useState([]);
   useEffect(() => {
@@ -22,7 +22,7 @@ function Case() {
       <div className="card-container">
         { 
           cases.map((caseItem) => (
-            <Card
+            <CaseCard
               key={caseItem._id}
               Name={caseItem.Name}
               Desc={caseItem.Desc}
@@ -34,4 +34,4 @@ function Case() {
   );  
 }
 
-export default Case;
+export default Cases;
