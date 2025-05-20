@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import LoginCard from '../components/cards/login-card';
 import '../styling/cases.css';
 
