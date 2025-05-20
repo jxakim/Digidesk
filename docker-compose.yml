@@ -1,7 +1,7 @@
 version: "3"
 services:
   mongo:
-    image: mongo
+    image: mongo:4.4
     container_name: mongo
     ports:
       - "27017:27017"
