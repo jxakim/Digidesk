@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo:6.0
+    image: mongo:4.4
     container_name: mongo
     volumes:
       - mongo-data:/data/db
@@ -50,3 +50,4 @@ volumes:
 networks:
   mern-net:
     driver: bridge
+

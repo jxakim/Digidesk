@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Case = require('./models/Case');
 require('dotenv').config();
 
-mongoose.connect(process.env.DATABASE_URL)
+mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("Connected to MongoDB");
 
