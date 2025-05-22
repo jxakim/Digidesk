@@ -1,48 +1,52 @@
-version: "3"
+version: '3.8'
+
 services:
   mongo:
-    image: mongo:4.4
+    image: mongo:6.0
     container_name: mongo
-    ports:
-      - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    networks:
+      - mern-net
 
-  backend1:
+  backend:
     build: ./backend
-    container_name: backend1
-    ports:
-      - "5000:5000"
+    container_name: backend
     environment:
-      - MONGO_URI=mongodb://mongo:27017/mern
+      - MONGO_URI=mongodb://mongo:27017/digidesk
+    env_file:
+      - ./backend/.env
     depends_on:
       - mongo
+    networks:
+      - mern-net
 
-  backend2:
-    build: ./backend
-    container_name: backend2
-    ports:
-      - "5001:5000"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/mern
-    depends_on:
-      - mongo
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    networks:
+      - mern-net
 
-  frontend1:
-    build: ./frontend
-    container_name: frontend1
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/digidesk.no.conf:/etc/nginx/conf.d/digidesk.no.conf
+      - ./nginx/digidesk.one.conf:/etc/nginx/conf.d/digidesk.one.conf
+      - ./nginx/ssl:/etc/ssl/private
+      - ./frontend/build:/usr/share/nginx/html
     depends_on:
-      - backend1
-      
-  frontend2:
-    build: ./frontend
-    container_name: frontend2
-    ports:
-      - "8081:80"
-    depends_on:
-      - backend2
+      - frontend
+      - backend
+    networks:
+      - mern-net
 
 volumes:
   mongo-data:
+
+networks:
+  mern-net:
+    driver: bridge
