@@ -16,7 +16,6 @@ function Navbar() {
         </div>
 
         <div id="navbar-right" className={menuOpen ? 'show' : ''}>
-            <a href="/">TEST</a>
             <a href="/">Problemer</a>
             <a href="/">Åpningstider</a>
             <a href="/">Kontakt oss</a>
