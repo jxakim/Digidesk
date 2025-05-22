@@ -78,6 +78,15 @@ body {
 }
 
 @media (max-width: 1000px) {
+  #logo {
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 400;
+    text-decoration: none;
+    color: #000;
+  }
+
   #navbar-right {
     display: none;
     flex-direction: column;
