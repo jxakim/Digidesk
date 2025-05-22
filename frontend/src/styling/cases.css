@@ -3,7 +3,7 @@ body {
 }
 
 .cases-container {
-    padding: 30px 200px;
+    padding: 30px 50px;
     justify-content: center;
 }
 
@@ -20,4 +20,24 @@ body {
     flex-wrap: wrap;
     justify-content: left;
     gap: 70px;
+}
+
+@media (max-width: 1000px) {
+    .cases-container {
+        padding: 30px 50px;
+    }
+
+    .card-container {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 800px) {
+    .cases-container {
+        padding: 30px 20px;
+    }
+
+    .card-container {
+        justify-content: center;
+    }
 }
