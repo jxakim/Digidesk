@@ -19,7 +19,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    gap: 70px;
+    gap: 30px;
 }
 
 @media (max-width: 1000px) {

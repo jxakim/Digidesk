@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
 
-function Cases() {
+function Cases(props) {
 
   const [cases, setCases] = useState([]);
   useEffect(() => {
@@ -18,10 +18,10 @@ function Cases() {
 
   return (
     <div className="cases-container">
-      <h2 className="header">Kjente hendvendelser</h2>
+      <h2 className="header">{props.Header}</h2>
       <div className="card-container">
         { 
-          cases.map((caseItem) => (
+          cases.slice(0, 3).map((caseItem) => (
             <CaseCard
               key={caseItem._id}
               Name={caseItem.Name}

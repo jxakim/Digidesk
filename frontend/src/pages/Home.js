@@ -1,9 +1,10 @@
 import Cases from '../components/cases';
+import Request from '../components/request';
 
 function Home() {
   return (
     <>
-      <Cases />
+      <Cases Header="Nylige problemer"/>
     </>
   );  
 }   

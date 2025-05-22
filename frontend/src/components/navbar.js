@@ -16,10 +16,8 @@ function Navbar() {
         </div>
 
         <div id="navbar-right" className={menuOpen ? 'show' : ''}>
-            <a href="/">Problemer</a>
-            <a href="/">Problemer</a>
-            <a href="/">Åpningstider</a>
-            <a href="/">Kontakt oss</a>
+            <a href="/Problemer">Problemer</a>
+            <a href="/Kontakt">Kontakt oss</a>
         </div>
     </div>
   );

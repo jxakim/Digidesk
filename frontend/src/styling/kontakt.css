@@ -1,0 +1,24 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    padding: 30px 50px;
+    justify-content: center;
+}
+
+.header {
+    font-size: 32px;
+    font-weight: 400;
+    text-align: left;
+    margin: 50px 0;
+    user-select: none;
+}
+
+.sub {
+    font-size: 28px;
+    font-weight: 400;
+    text-align: left;
+    margin: 50px 0;
+    user-select: none;
+}

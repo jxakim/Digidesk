@@ -6,6 +6,8 @@ import './index.css';
 import Navbar from './components/navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Kontakt from './pages/Kontakt';
+import Problemer from './pages/Problemer';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -18,6 +20,8 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<Login />} />
+        <Route path="/kontakt" element={<Kontakt />} />
+        <Route path="/problemer" element={<Problemer />} />
       </Routes>
     </Router>
   </React.StrictMode>
