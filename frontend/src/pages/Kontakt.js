@@ -1,4 +1,5 @@
 import "../styling/kontakt.css";
+import "../styling/format.css";
 import { Phone, Clock, MapPin } from 'lucide-react';
 
 function Kontakt() {

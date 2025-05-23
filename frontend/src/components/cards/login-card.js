@@ -1,9 +1,11 @@
 import '../../styling/login-card.css';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function LoginCard() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,10 +18,9 @@ function LoginCard() {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('token', data.token);
-      alert('Logged in!');
-      
+      navigate('/');
     } else {
-      alert('Login failed');
+      navigate('/admin');
     }
   };
 

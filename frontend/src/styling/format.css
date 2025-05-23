@@ -1,0 +1,21 @@
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: 600;
+    user-select: none;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 18px;
+}
+
+.aligndiv {
+    padding: 30px 50px;
+    justify-content: left;
+    margin: 50px 0;
+    width: 1200px;
+}

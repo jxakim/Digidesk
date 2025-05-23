@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styling/cases.css';
+import "../styling/format.css";
 
 function Case() {
   const { id } = useParams();
