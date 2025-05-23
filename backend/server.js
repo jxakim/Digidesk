@@ -13,6 +13,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const casesRouter = require('./routes/cases');
+app.use('/api/cases', casesRouter);
 
 // Connect to MongoDB
 try {
@@ -38,7 +41,7 @@ app.post('/api/login', async (req, res) => {
   const user = await User.findOne({ username });
   if (!user) return res.status(401).send('Invalid');
 
-  const match = await bcrypt.compare(password, user.password);
+  const match = bcrypt.compare(password, user.password);
   if (!match) return res.status(401).send('Invalid');
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);

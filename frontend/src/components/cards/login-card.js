@@ -17,6 +17,7 @@ function LoginCard() {
       const data = await res.json();
       localStorage.setItem('token', data.token);
       alert('Logged in!');
+      
     } else {
       alert('Login failed');
     }

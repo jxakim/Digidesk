@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Kontakt from './pages/Kontakt';
 import Problemer from './pages/Problemer';
+import Case from './pages/Case';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -22,6 +23,7 @@ root.render(
         <Route path="/admin" element={<Login />} />
         <Route path="/kontakt" element={<Kontakt />} />
         <Route path="/problemer" element={<Problemer />} />
+        <Route path="/cases/:id" element={<Case />} />
       </Routes>
     </Router>
   </React.StrictMode>

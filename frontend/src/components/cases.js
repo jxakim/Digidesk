@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
 
@@ -27,11 +28,13 @@ function Cases(props) {
       <div className="card-container">
         {
           displayedCases.map((caseItem) => (
-            <CaseCard
-              key={caseItem._id}
-              Name={caseItem.Name}
-              Desc={caseItem.Desc}
-            />
+            <Link to={`/cases/${caseItem._id}`} key={caseItem._id} className="card-link">
+              <CaseCard
+                key={caseItem._id}
+                Name={caseItem.Name}
+                Desc={caseItem.Desc}
+              />
+            </Link>
           ))
         }
       </div>

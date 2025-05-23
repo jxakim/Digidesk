@@ -15,6 +15,11 @@ body {
     user-select: none;
 }
 
+.card-link {
+    text-decoration: none;
+    color: black;
+}
+
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -32,6 +37,12 @@ body {
     }
 }
 
+@media (max-width: 740px) {
+    .card-link {
+        width: 100%;
+    }
+}
+
 @media (max-width: 600px) {
     .cases-container {
         padding: 30px 20px;
@@ -40,5 +51,9 @@ body {
 
     .card-container {
         justify-content: left;
+    }
+
+    .card-link {
+        width: 100%;
     }
 }
