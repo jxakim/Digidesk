@@ -4,7 +4,7 @@ body {
 
 .cases-container {
     padding: 30px 50px;
-    justify-content: center;
+    justify-content: left;
 }
 
 .header {
@@ -28,17 +28,17 @@ body {
     }
 
     .card-container {
-        justify-content: center;
+        justify-content: left;
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 600px) {
     .cases-container {
         padding: 30px 20px;
     }
 
 
     .card-container {
-        justify-content: center;
+        justify-content: left;
     }
 }

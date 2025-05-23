@@ -1,10 +1,10 @@
 import Cases from '../components/cases';
-import Request from '../components/request';
+// import Request from '../components/request';
 
 function Home() {
   return (
     <>
-      <Cases Header="Nylige problemer"/>
+      <Cases Header="Nylige problemer" Crop={{amount: 3}}/>
     </>
   );  
 }   

@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGO_URI)
       { Name: "Test", Desc: "This is a test" },
     ]);
 
-    console.log("Test cases inserted");
+    console.log("Case inserted");
     mongoose.disconnect();
   })
   .catch(err => console.error(err));

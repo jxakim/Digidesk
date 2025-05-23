@@ -4,6 +4,10 @@ const cors = require('cors');
 require('dotenv').config();
 
 const Case = require('./models/Case');
+const User = require('./models/User')
+
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(cors());
@@ -25,6 +29,22 @@ app.get('/api/cases', async (req, res) => {
   const allCases = await Case.find({});
   res.json(allCases);
 });
+
+
+// Login post api
+app.post('/api/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await User.findOne({ username });
+  if (!user) return res.status(401).send('Invalid');
+
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) return res.status(401).send('Invalid');
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  res.json({ token });
+});
+
 
 
 const PORT = process.env.PORT || 5000;
