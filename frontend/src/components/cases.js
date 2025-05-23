@@ -21,7 +21,7 @@ function Cases(props) {
       <h2 className="header">{props.Header}</h2>
       <div className="card-container">
         { 
-          cases.slice(0, 3).map((caseItem) => (
+          cases.map((caseItem) => (
             <CaseCard
               key={caseItem._id}
               Name={caseItem.Name}
