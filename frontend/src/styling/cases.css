@@ -28,6 +28,12 @@ body {
     gap: 30px;
 }
 
+.button-container {
+    margin-top: 20px; /* Adds spacing between the card container and buttons */
+    display: flex;
+    justify-content: center; /* Centers the buttons horizontally */
+}
+
 @media (max-width: 1000px) {
     .cases-container {
         padding: 30px 50px;

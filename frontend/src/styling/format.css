@@ -13,6 +13,53 @@ p {
     font-size: 18px;
 }
 
+.attention-button {
+    background-color: #d67d16;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+.attention-button:hover {
+    background-color: rgb(194, 126, 0);
+}
+
+.warn-button {
+    background-color: #cc2222;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+.warn-button:hover {
+    background-color: #bf1a1a;
+}
+
+.normal-button {
+    background-color: #226ccc;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+.normal-button:hover {
+    background-color: #1a5bbf;
+}
 
 .container {
     padding: 30px 50px;
@@ -28,6 +75,15 @@ p {
 
 
 @media (max-width: 1000px) {
+    .normal-button, .warn-button, .attention-button {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
     .container {
         padding: 30px 50px;
         width: 750px;
@@ -41,6 +97,15 @@ p {
 }
 
 @media (max-width: 740px) {
+    .normal-button, .warn-button, .attention-button {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
     .container {
         padding: 30px 50px;
         width: 600px;
@@ -54,6 +119,10 @@ p {
 }
 
 @media (max-width: 600px) {
+    h1 {
+        font-size: 24px;
+    }
+
     .container {
         padding: 30px 50px;
         width: 500px;
