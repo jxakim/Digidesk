@@ -13,9 +13,55 @@ p {
     font-size: 18px;
 }
 
-.aligndiv {
+
+.container {
     padding: 30px 50px;
     justify-content: left;
-    margin: 50px 0;
-    width: 1200px;
+    width: 1000px;
+}
+
+.centered_container {
+    max-width: 1200px;
+    padding: 70px 50px;
+    margin: auto;
+}
+
+
+@media (max-width: 1000px) {
+    .container {
+        padding: 30px 50px;
+        width: 750px;
+    }
+
+    .centered_container {
+        max-width: 1000;
+        padding: 70px 50px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 740px) {
+    .container {
+        padding: 30px 50px;
+        width: 600px;
+    }
+
+    .centered_container {
+        max-width: 800px;
+        padding: 70px 50px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 30px 50px;
+        width: 500px;
+    }
+
+    .centered_container {
+        max-width: 500px;
+        padding: 70px 50px;
+        margin: auto;
+    }
 }

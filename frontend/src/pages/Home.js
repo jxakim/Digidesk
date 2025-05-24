@@ -5,7 +5,7 @@ import "../styling/format.css";
 function Home() {
   return (
     <>
-      <div className="aligndiv">
+      <div className="container">
         <h1>Digital Servicedesk</h1>
         <p>
           Velkommen til vår digitale Servicedesk.

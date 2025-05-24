@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Kontakt from './pages/Kontakt';
 import Problemer from './pages/Problemer';
 import Case from './pages/Case';
+import Admin from './pages/Admin';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -21,6 +22,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<Login />} />
+        <Route path="/admin/home" element={<Admin />} />
         <Route path="/kontakt" element={<Kontakt />} />
         <Route path="/problemer" element={<Problemer />} />
         <Route path="/cases/:id" element={<Case />} />

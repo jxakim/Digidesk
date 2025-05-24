@@ -33,7 +33,6 @@ app.get('/api/cases', async (req, res) => {
   res.json(allCases);
 });
 
-
 // Login post api
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;

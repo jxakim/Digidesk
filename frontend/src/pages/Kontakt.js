@@ -4,7 +4,7 @@ import { Phone, Clock, MapPin } from 'lucide-react';
 
 function Kontakt() {
   return (
-    <div className="contact-container">
+    <div className="centered_container">
 
       <div className="contact-grid">
 
@@ -53,8 +53,10 @@ function Kontakt() {
           </label>
           <button type="submit">Send inn sak</button>
         </form>
+
       </div>
     </div>
+
   );  
 }   
 

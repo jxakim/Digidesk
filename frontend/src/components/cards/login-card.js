@@ -18,7 +18,7 @@ function LoginCard() {
     if (res.ok) {
       const data = await res.json();
       localStorage.setItem('token', data.token);
-      navigate('/');
+      navigate('/admin/home');
     } else {
       navigate('/admin');
     }
