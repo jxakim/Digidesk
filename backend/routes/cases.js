@@ -12,6 +12,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.post('/new', async (req, res) => {
+    const { Name, Desc } = req.body;
+    
+    if (!Name || !Desc) {
+      return res.status(400).send('Name and description are required');
+    }
+
+    console.log('Creating case with name:', Name, 'and description:', Desc);
+    
+    try {
+      const newCase = new Case({ Name, Desc });
+      await newCase.save();
+      res.status(201).json(newCase);
+    } catch (err) {
+      console.error('Error creating case:', err);
+      res.status(500).send('Server error');
+    }
+});
+
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     

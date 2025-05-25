@@ -1,5 +1,6 @@
 import "../styling/format.css";
 import Cases from '../components/cases';
+import NewCase from '../components/new-case';
 // import Request from '../components/request';
 
 function Admin() {
@@ -7,7 +8,7 @@ function Admin() {
     <>
       <div className="container">
         <h1>Administrering</h1>
-        <button className="normal-button">Lag ny sak</button>
+        <NewCase />
         <button className="normal-button">Lag ny bruker</button>
       </div>
 
