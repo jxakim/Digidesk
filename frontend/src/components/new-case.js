@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styling/format.css';
 import '../styling/new-case.css';
 
-function NewCase() {
+function NewCase({ onCaseAdded }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     Name: '',
@@ -30,9 +30,10 @@ function NewCase() {
       });
 
       if (response.ok) {
-        alert('Case added successfully!');
         setFormData({ Name: '', Desc: '' });
         setMenuOpen(false);
+        console.log('Case added successfully');
+        if (onCaseAdded) onCaseAdded();
       } else {
         const errorText = await response.text();
         console.error('Failed to add case:', errorText);

@@ -12,17 +12,17 @@ function LoginCard() {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      credentials: 'include',
+      body: JSON.stringify({ username, password }),
     });
-
+  
     if (res.ok) {
-      const data = await res.json();
-      localStorage.setItem('token', data.token);
       navigate('/admin/home');
     } else {
       navigate('/admin');
     }
   };
+  
 
   return (
     <div className="test">

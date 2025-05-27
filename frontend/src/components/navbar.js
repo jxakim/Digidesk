@@ -7,7 +7,7 @@ function Navbar() {
 
   return (
     <div id="navbar">
-        <div id="logo"><img src="vfk.png" alt="logo"/><a id="logo" href="/">Digital Servicedesk</a></div>
+        <div id="logo"><img src="/vfk.png" alt="logo"/><a id="logo" href="/">Digital Servicedesk</a></div>
 
         <div id="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <div></div>
