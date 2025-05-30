@@ -23,7 +23,8 @@ router.post('/new', Auth, async (req, res) => {
     console.log('Creating case with name:', Name, 'and description:', Desc);
     
     try {
-      const newCase = new Case({ Name, Desc });
+      const newCase = new Case({ Name, Desc, Created: new Date(), Updated: new Date(), Status: 'recognized' });
+      console.log('New case object:', newCase);
       await newCase.save();
       res.status(201).json(newCase);
     } catch (err) {

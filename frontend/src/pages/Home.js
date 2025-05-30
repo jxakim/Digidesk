@@ -14,6 +14,8 @@ function Home() {
         </p>
       </div>
       <Cases Header="Nylige problemer" Crop={{amount: 3}}/>
+
+      <Cases Header="Løste problemer" Crop={{amount: 3}} Status="solved"/>
     </>
   );  
 }   
