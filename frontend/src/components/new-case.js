@@ -7,6 +7,7 @@ function NewCase({ onCaseAdded }) {
   const [formData, setFormData] = useState({
     Name: '',
     Desc: '',
+    Status: 'recognized',
   });
 
   const toggleMenu = () => {
@@ -30,7 +31,7 @@ function NewCase({ onCaseAdded }) {
       });
 
       if (response.ok) {
-        setFormData({ Name: '', Desc: '' });
+        setFormData({ Name: '', Desc: '', Status: '' }); // Reset form
         setMenuOpen(false);
         console.log('Case added successfully');
         if (onCaseAdded) onCaseAdded();
@@ -70,6 +71,21 @@ function NewCase({ onCaseAdded }) {
               required
             />
           </label>
+
+          <label>
+            Status
+            <select
+              name="Status"
+              value={formData.Status}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="recognized">Recognized</option>
+              <option value="in-progress">In-Progress</option>
+              <option value="solved">Solved</option>
+            </select>
+          </label>
+
           <button type="submit" className="normal-button">Add Case</button>
         </form>
       </div>

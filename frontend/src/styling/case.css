@@ -1,0 +1,45 @@
+:root {
+    --light-gray-bg: #f8f9fa;
+}
+
+.case-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    /* Light gray background for readability */
+    background-color: var(--light-gray-bg);
+    min-height: 100vh;
+}
+
+.case-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+}
+
+.case-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.case-status {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.case-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+  
+.case-dates {
+    font-size: 0.9rem;
+    color: #666;
+}
+  

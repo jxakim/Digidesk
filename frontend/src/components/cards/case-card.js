@@ -1,7 +1,6 @@
 import '../../styling/case-card.css';
 
 function Card(props) {
-  console.log(props.Created, props.Status);
   function capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -12,7 +11,7 @@ function Card(props) {
       <p>{capitalizeFirst(props.Desc)}</p>
       <br />
       <p className="card-status">Status: {capitalizeFirst(props.Status)}</p>
-      <p className="card-date">Sist oppdatert: {new Date(props.Created).toLocaleDateString("no-NO")}</p>
+      <p className="card-date">Sist oppdatert: {new Date(props.Updated).toLocaleDateString("no-NO")}</p>
     </div>
   );
 }

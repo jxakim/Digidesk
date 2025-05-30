@@ -1,8 +1,8 @@
 .side-menu {
     position: fixed;
     top: 0;
-    right: -300px; /* Hidden by default */
-    width: 300px;
+    right: -600px; /* Hidden by default */
+    width: 600px;
     height: 100%;
     background-color: #f4f4f4;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -65,4 +65,14 @@ form textarea {
 
 .submit-button:hover {
     background-color: #218838;
+}
+
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    font-size: 1rem;
 }

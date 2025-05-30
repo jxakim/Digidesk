@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/new', Auth, async (req, res) => {
-    const { Name, Desc } = req.body;
+    const { Name, Desc, Status } = req.body;
     
     if (!Name || !Desc) {
       return res.status(400).send('Name and description are required');
@@ -23,7 +23,14 @@ router.post('/new', Auth, async (req, res) => {
     console.log('Creating case with name:', Name, 'and description:', Desc);
     
     try {
-      const newCase = new Case({ Name, Desc, Created: new Date(), Updated: new Date(), Status: 'recognized' });
+      const newCase = new Case({
+        Name,
+        Desc,
+        Created: new Date(),
+        Updated: new Date(),
+        Status
+      });
+
       console.log('New case object:', newCase);
       await newCase.save();
       res.status(201).json(newCase);
