@@ -23,7 +23,7 @@
 
 .case-title {
     font-size: 2rem;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .case-status {
@@ -38,8 +38,14 @@
     margin-bottom: 40px;
 }
   
-.case-dates {
+.case-small {
     font-size: 0.9rem;
     color: #666;
+}
+
+.case-category {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 20px;
 }
   

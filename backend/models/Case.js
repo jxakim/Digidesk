@@ -10,6 +10,8 @@ const Case = new mongoose.Schema({
     enum: ['recognized', 'solved', 'in-progress'],
     default: 'recognized',
   },
+  Category: String,
+  Subcategory: String
 });
 
 module.exports = mongoose.model('cases', Case);

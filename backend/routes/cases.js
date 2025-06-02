@@ -14,7 +14,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/new', Auth, async (req, res) => {
-    const { Name, Desc, Status } = req.body;
+    const { Name, Desc, Status, Category, Subcategory } = req.body;
     
     if (!Name || !Desc) {
       return res.status(400).send('Name and description are required');
@@ -28,7 +28,9 @@ router.post('/new', Auth, async (req, res) => {
         Desc,
         Created: new Date(),
         Updated: new Date(),
-        Status
+        Status,
+        Category,
+        Subcategory
       });
 
       console.log('New case object:', newCase);

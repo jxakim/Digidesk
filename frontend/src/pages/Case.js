@@ -37,8 +37,9 @@ function Case() {
     <div className="case-page">
       <div className="case-card">
         <h1 className="case-title">{capitalizeFirst(caseItem.Name)}</h1>
+        <p className="case-category">Kategori: {capitalizeFirst(caseItem.Category)} / {capitalizeFirst(caseItem.Subcategory)}</p>
         <div className="case-desc" dangerouslySetInnerHTML={{ __html: caseItem.Desc }} />
-        <p className="case-dates">
+        <p className="case-small">
           Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
           Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
           <br />

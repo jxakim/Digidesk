@@ -8,7 +8,15 @@ function NewCase({ onCaseAdded }) {
     Name: '',
     Desc: '',
     Status: 'recognized',
+    Category: '',
+    Subcategory: '',
   });
+
+const subcategories = {
+    konto: ['Passord', 'Brukertilgang'],
+    datamaskin: ['Skjerm', 'Tastatur', 'Nettverk'],
+    windows: ['Oppdateringer', 'Feilmeldinger'],
+};
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -31,7 +39,7 @@ function NewCase({ onCaseAdded }) {
       });
 
       if (response.ok) {
-        setFormData({ Name: '', Desc: '', Status: '' }); // Reset form
+        setFormData({ Name: '', Desc: '', Status: '', Category: '', Subcategory: '' });
         setMenuOpen(false);
         console.log('Case added successfully');
         if (onCaseAdded) onCaseAdded();
@@ -85,6 +93,41 @@ function NewCase({ onCaseAdded }) {
               <option value="solved">Solved</option>
             </select>
           </label>
+
+          <label>
+            Hovedkategori
+            <select
+              name="Category"
+              value={formData.Category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled hidden>Velg kategori</option>
+              <option value="konto">Brukerkonto</option>
+              <option value="datamaskin">Maskinvare</option>
+              <option value="windows">Windows</option>
+            </select>
+          </label>
+
+          {formData.Category && (
+            <label>
+              Underkategori
+              <select
+                name="Subcategory"
+                value={formData.Subcategory}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="" disabled hidden>Velg underkategori</option>
+                {subcategories[formData.Category].map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
+
 
           <button type="submit" className="normal-button">Add Case</button>
         </form>
