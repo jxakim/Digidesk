@@ -12,10 +12,16 @@ function NewCase({ onCaseAdded }) {
     Subcategory: '',
   });
 
+const categories = [
+    'Konto',
+    'Datamaskin',
+    'Programvare'
+];
+
 const subcategories = {
-    konto: ['Passord', 'Brukertilgang'],
-    datamaskin: ['Skjerm', 'Tastatur', 'Nettverk'],
-    windows: ['Oppdateringer', 'Feilmeldinger'],
+    Konto: ['Passord', 'Brukertilgang', 'To-faktor'],
+    Datamaskin: ['Skjerm', 'Tastatur', 'Nettverk'],
+    Programvare: ['Oppdateringer', 'Feilmeldinger', "Office 365", 'Windows', 'Annen programvare'],
 };
 
   const toggleMenu = () => {
@@ -103,9 +109,11 @@ const subcategories = {
               required
             >
               <option value="" disabled hidden>Velg kategori</option>
-              <option value="konto">Brukerkonto</option>
-              <option value="datamaskin">Maskinvare</option>
-              <option value="windows">Windows</option>
+              {categories.map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+              ))}
             </select>
           </label>
 

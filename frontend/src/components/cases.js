@@ -5,6 +5,8 @@ import '../styling/cases.css';
 
 function Cases({ Crop, Header, Config, Refresh, Status }) {
   const [cases, setCases] = useState([]);
+  const [filter, setFilter] = useState({ search: '', category: '' });
+
 
   useEffect(() => {
     fetch('/api/cases')
