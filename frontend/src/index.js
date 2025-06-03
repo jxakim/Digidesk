@@ -35,11 +35,16 @@ root.render(
           }
         />
 
-
-
         <Route path="/kontakt" element={<Kontakt />} />
         <Route path="/problemer" element={<Problemer />} />
         <Route path="/cases/:id" element={<Case />} />
+        <Route
+          path="/cases/edit/:id"
+          element={
+            <ProtectedRoute>
+              <Case Viewmode="admin" />
+            </ProtectedRoute>
+          } />
       </Routes>
     </Router>
   </React.StrictMode>

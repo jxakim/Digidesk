@@ -4,7 +4,7 @@ import '../styling/cases.css';
 import '../styling/case.css';
 import "../styling/format.css";
 
-function Case() {
+function Case({ Viewmode }) {
   const { id } = useParams();
   const [caseItem, setCaseItem] = useState(null);
   const [error, setError] = useState(null);
@@ -34,19 +34,53 @@ function Case() {
   if (error) return <div>Feil: {error}</div>;
 
   return (
-    <div className="case-page">
-      <div className="case-card">
-        <h1 className="case-title">{capitalizeFirst(caseItem.Name)}</h1>
-        <p className="case-category">Kategori: {capitalizeFirst(caseItem.Category)} / {capitalizeFirst(caseItem.Subcategory)}</p>
-        <div className="case-desc" dangerouslySetInnerHTML={{ __html: caseItem.Desc }} />
-        <p className="case-small">
-          Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
-          Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
-          <br />
-          Status: {capitalizeFirst(caseItem.Status)}
-        </p>
-      </div>
-    </div>
+    <>
+      {Viewmode === "admin" ? (
+        <div className="case-page">
+          <div className="case-card">
+            <h1 className="case-title" contentEditable suppressContentEditableWarning>{capitalizeFirst(caseItem.Name)}</h1>
+            <p className="case-category">Kategori: {capitalizeFirst(caseItem.Category)} / {capitalizeFirst(caseItem.Subcategory)}</p>
+        
+            <div className="case-desc" contentEditable suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: caseItem.Desc }} />
+        
+            <p className="case-small">
+              Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
+              Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
+              <br />
+              Status: {capitalizeFirst(caseItem.Status)}
+            </p>
+          </div>
+
+          <button
+            className="normal-button"
+            onClick={() => console.log("Test")}
+          >
+            Lagre endringer
+          </button>
+
+          <button
+            className="warn-button"
+            onClick={() => console.log("Test")}
+          >
+            Avbryt
+          </button>
+        </div>
+      ) : (
+        <div className="case-page">
+          <div className="case-card">
+            <h1 className="case-title">{capitalizeFirst(caseItem.Name)}</h1>
+            <p className="case-category">Kategori: {capitalizeFirst(caseItem.Category)} / {capitalizeFirst(caseItem.Subcategory)}</p>
+            <div className="case-desc" dangerouslySetInnerHTML={{ __html: caseItem.Desc }} />
+            <p className="case-small">
+              Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
+              Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
+              <br />
+              Status: {capitalizeFirst(caseItem.Status)}
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
   
 }

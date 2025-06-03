@@ -24,27 +24,6 @@ function Cases({ Crop, Header, Config, Refresh, Status }) {
     ? filteredCases.slice(0, Crop.amount ?? 3)
     : filteredCases;
 
-  const handleEdit = async (id) => {
-    try {
-      const res = await fetch(`/api/cases/edit/${id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        console.error('Failed to edit case:', text);
-      } else {
-        console.log('yippe');
-      }
-    } catch (err) {
-      console.error('Error editing case:', err);
-    }
-  };
-
   const handleDelete = async (id) => {
     try {
       const res = await fetch(`/api/cases/${id}`, {
@@ -83,12 +62,12 @@ function Cases({ Crop, Header, Config, Refresh, Status }) {
 
               {Config && (
                 <div className="button-container">
-                  <button
-                    className="attention-button"
-                    onClick={() => handleEdit(caseItem._id)}
-                  >
-                    Rediger sak
-                  </button>
+                  <Link to={`/cases/edit/${caseItem._id}`} className="card-link">
+                    <button className="attention-button">
+                      Rediger sak
+                    </button>
+                  </Link>
+
                   <button
                     className="warn-button"
                     onClick={() => handleDelete(caseItem._id)}
