@@ -50,11 +50,13 @@ function Case({ Viewmode }) {
         setLoading(false);
       } else {
         const errorText = await response.text();
+        navigate(`/admin/home`);
         console.error('Feil ved oppdatering av sak:', errorText);
         alert('Feil ved oppdatering av sak: ' + errorText);
         setLoading(false);
       }
     } catch (error) {
+      navigate(`/admin/home`);
       console.error('Feil ved oppdatering av sak:', error);
       alert('En uventet feil oppstod: ' + error.message);
       setLoading(false);
