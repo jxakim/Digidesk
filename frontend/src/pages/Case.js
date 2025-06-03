@@ -51,20 +51,16 @@ function Case({ Viewmode }) {
             </p>
           </div>
 
-          <button
-            className="normal-button"
-            onClick={() => console.log("Test")}
-          >
-            Lagre endringer
-          </button>
+          <div className="case-buttons">
+            <button className="normal-button" onClick={() => console.log("Test")} >
+              Lagre endringer
+            </button>
 
-          <button
-            className="warn-button"
-            onClick={() => console.log("Test")}
-          >
-            Avbryt
-          </button>
+            <button className="warn-button" onClick={() => console.log("Test")} >
+              Avbryt
+            </button>
         </div>
+          </div>
       ) : (
         <div className="case-page">
           <div className="case-card">
