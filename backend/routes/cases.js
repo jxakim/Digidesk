@@ -42,24 +42,26 @@ router.post('/new', Auth, async (req, res) => {
     }
 });
 
-router.post('/edit/:id', Auth, async (req, res) => {
-    const { id } = req.params;
-    const { Name, Desc } = req.body;
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { Name, Desc, Status, Category, Subcategory } = req.body;
 
-    if (!Name || !Desc) {
-      return res.status(400).send('Name and description are required');
-    }
+  try {
+      const updatedCase = await Case.findByIdAndUpdate(
+          id,
+          { Name, Desc, Status, Category, Subcategory },
+          { new: true }
+      );
 
-    try {
-      const updatedCase = await Case.findByIdAndUpdate(id, { Name, Desc }, { new: true });
       if (!updatedCase) {
-        return res.status(404).send('Case not found');
+          return res.status(404).send('Case not found');
       }
+
       res.status(200).json(updatedCase);
-    } catch (err) {
-      console.error('Error updating case:', err);
-      res.status(500).send('Server error');
-    }
+  } catch (error) {
+      console.error('Error updating case:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 router.delete('/:id', async (req, res) => {

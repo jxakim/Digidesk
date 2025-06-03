@@ -19,6 +19,9 @@ body {
 .card h3 {
     font-size: 25px;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card:hover {

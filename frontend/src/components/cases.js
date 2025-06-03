@@ -82,6 +82,6 @@ function Cases({ Crop, Header, Config, Refresh, Status }) {
       </div>
     </div>
   );
-}
+} 
 
 export default Cases;

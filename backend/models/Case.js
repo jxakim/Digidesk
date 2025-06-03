@@ -5,11 +5,7 @@ const Case = new mongoose.Schema({
   Desc: String,
   Created: Date,
   Updated: Date,
-  Status: {
-    type: String,
-    enum: ['recognized', 'solved', 'in-progress'],
-    default: 'recognized',
-  },
+  Status: { type: String, default: 'recognized', },
   Category: String,
   Subcategory: String
 });

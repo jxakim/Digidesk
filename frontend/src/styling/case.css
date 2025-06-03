@@ -4,26 +4,41 @@
 
 .case-page {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* Stack child elements vertically */
+    align-items: center; /* Center the content horizontally */
     padding: 40px;
-    /* Light gray background for readability */
     background-color: var(--light-gray-bg);
     min-height: 100vh;
+
 }
 
 .case-card {
+    display: block;
     background: white;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 1000px;
     width: 100%;
+    height: auto;
 }
 
 .case-title {
     font-size: 2rem;
     margin-bottom: 5px;
+}
+
+.case-title-edit {
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 5px 0px 5px 5px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: none;
+    outline: none;
+    color: inherit;
+    width: 100%; 
+    cursor: text;
 }
 
 .case-status {
@@ -36,6 +51,21 @@
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 40px;
+    white-space: pre-wrap;
+}
+
+.case-desc-edit {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    padding: 0px 0px 200px 10px;
+    border-radius: 8px;
+    background: white;
+    outline: none;
+    color: inherit;
+    width: 100%;
+    resize: none;
+    white-space: pre-wrap;
 }
   
 .case-small {
@@ -53,5 +83,6 @@
     display: flex;
     gap: 10px;
     margin-top: 20px;
-    align-self: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }

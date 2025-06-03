@@ -69,6 +69,7 @@ const subcategories = {
             Tittel
             <input
               type="text"
+              maxLength={ 40 }
               name="Name"
               value={formData.Name}
               onChange={handleInputChange}
