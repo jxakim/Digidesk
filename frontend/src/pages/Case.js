@@ -46,7 +46,7 @@ function Case({ Viewmode }) {
           Category: updatedCase.Category,
           Subcategory: updatedCase.Subcategory,
         });
-        navigate(`/cases/edit/${caseItem._id}`);
+        navigate(`/admin/home`);
         setLoading(false);
       } else {
         const errorText = await response.text();
@@ -128,8 +128,9 @@ function Case({ Viewmode }) {
               </button>
 
               <button
+                type="button"
                 className="warn-button"
-                onClick={() => console.log("Canceled")}
+                onClick={() => {navigate(`/admin/home`)}}
               >
                 Avbryt
               </button>
