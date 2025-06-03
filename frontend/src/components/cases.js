@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
 
-function Cases({ Crop, Header, Config, Refresh, Status }) {
+function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', category: '' });
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilter((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     fetch('/api/cases')
@@ -15,10 +19,16 @@ function Cases({ Crop, Header, Config, Refresh, Status }) {
       .catch((err) => console.error('Error fetching cases:', err));
   }, [Refresh]);
 
-  const filteredCases = Status
-    ? cases.filter((c) => c.Status === Status)
-    : cases;
+  const filteredCases = cases.filter((c) => {
+    const matchesSearch =
+      filter.search === '' ||
+      c.Name.toLowerCase().includes(filter.search.toLowerCase());
+    const matchesCategory =
+      filter.category === '' || c.Category === filter.category;
+    const matchesStatus = !Status || c.Status === Status;
 
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
 
   const displayedCases = Crop
     ? filteredCases.slice(0, Crop.amount ?? 3)
@@ -48,6 +58,54 @@ function Cases({ Crop, Header, Config, Refresh, Status }) {
   return (
     <div className="cases-container">
       <h2 className="header">{Header}</h2>
+
+      {Filter && (
+        <div className="filter-container">
+          <input
+            type="text"
+            name="search"
+            placeholder="Søk etter navn..."
+            value={filter.search}
+            onChange={handleFilterChange}
+            className="filter-input"
+          />
+          <select
+            name="category"
+            value={filter.category}
+            onChange={handleFilterChange}
+            className="filter-select"
+          >
+            <option value="">Alle kategorier</option>
+            {[...new Set(cases.map((c) => c.Category))].map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+
+          {/* Show subcategories only if a category is selected */}
+          {filter.category && (
+            <select
+              name="subcategory"
+              value={filter.subcategory || ''}
+              onChange={handleFilterChange}
+              className="filter-select"
+            >
+              <option value="">Alle underkategorier</option>
+              {[...new Set(
+                cases
+                  .filter((c) => c.Category === filter.category) // Filter cases by selected category
+                  .map((c) => c.Subcategory)
+              )].map((subcategory) => (
+                <option key={subcategory} value={subcategory}>
+                  {subcategory}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      )}
+
       <div className="card-container">
         {displayedCases.length === 0 ? (
           <div className="empty-message">
