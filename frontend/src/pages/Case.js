@@ -28,12 +28,18 @@ function Case({ Viewmode }) {
     e.preventDefault(); 
     try {
       setLoading(true);
+
+      const updatedFormData = {
+        ...formData,
+        Updated: new Date().toISOString(),
+      };
+
       const response = await fetch(`/api/cases/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
 
       if (response.ok) {
@@ -45,6 +51,7 @@ function Case({ Viewmode }) {
           Status: updatedCase.Status,
           Category: updatedCase.Category,
           Subcategory: updatedCase.Subcategory,
+          Updated: updatedCase.Updated,
         });
         navigate(`/admin/home`);
         setLoading(false);

@@ -44,12 +44,12 @@ router.post('/new', Auth, async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { Name, Desc, Status, Category, Subcategory } = req.body;
+  const { Name, Desc, Status, Category, Subcategory, Updated } = req.body;
 
   try {
       const updatedCase = await Case.findByIdAndUpdate(
           id,
-          { Name, Desc, Status, Category, Subcategory },
+          { Name, Desc, Status, Category, Subcategory, Updated },
           { new: true }
       );
 
