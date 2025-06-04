@@ -11,7 +11,7 @@ body {
     font-size: 32px;
     font-weight: 600;
     text-align: left;
-    margin: 50px 0;
+    margin: 20px 0;
     user-select: none;
     margin-top: 0;
 }
@@ -25,13 +25,13 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    gap: 30px;
+    gap: 20px;
 }
 
 .button-container {
-    margin-top: 20px; /* Adds spacing between the card container and buttons */
+    margin-top: 20px;
     display: flex;
-    justify-content: center; /* Centers the buttons horizontally */
+    justify-content: center;
 }
 
 @media (max-width: 1000px) {

@@ -5,11 +5,15 @@ import '../styling/cases.css';
 
 function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
   const [cases, setCases] = useState([]);
-  const [filter, setFilter] = useState({ search: '', category: '' });
+  const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilter((prev) => ({ ...prev, [name]: value }));
+    setFilter((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'category' && { subcategory: '' }),
+    }));
   };
 
   useEffect(() => {
@@ -23,11 +27,17 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
     const matchesSearch =
       filter.search === '' ||
       c.Name.toLowerCase().includes(filter.search.toLowerCase());
+
     const matchesCategory =
       filter.category === '' || c.Category === filter.category;
-    const matchesStatus = !Status || c.Status === Status;
+    
+    const matchesSubcategory =
+      filter.subcategory === '' || c.Subcategory === filter.subcategory;
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    const matchesStatus =
+      filter.status === '' || c.Status === filter.status;
+
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
   });
 
   const displayedCases = Crop
@@ -61,20 +71,18 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
 
       {Filter && (
         <div className="filter-container">
-          <input
-            type="text"
-            name="search"
-            placeholder="Søk etter navn..."
-            value={filter.search}
-            onChange={handleFilterChange}
-            className="filter-input"
-          />
-          <select
-            name="category"
-            value={filter.category}
-            onChange={handleFilterChange}
-            className="filter-select"
-          >
+          <input type="text" name="search" placeholder="Søk etter et problem..." value={filter.search} onChange={handleFilterChange} className="filter-input" />
+          
+          <select name="status" value={filter.status} onChange={handleFilterChange} className="filter-select" >
+            <option value="">All status</option>
+            {[...new Set(cases.map((c) => c.Status))].map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+
+          <select name="category" value={filter.category} onChange={handleFilterChange} className="filter-select" >
             <option value="">Alle kategorier</option>
             {[...new Set(cases.map((c) => c.Category))].map((category) => (
               <option key={category} value={category}>
@@ -83,28 +91,22 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
             ))}
           </select>
 
-          {/* Show subcategories only if a category is selected */}
           {filter.category && (
-            <select
-              name="subcategory"
-              value={filter.subcategory || ''}
-              onChange={handleFilterChange}
-              className="filter-select"
-            >
+            <select name="subcategory" value={filter.subcategory || ''} onChange={handleFilterChange} className="filter-select" >
               <option value="">Alle underkategorier</option>
-              {[...new Set(
-                cases
-                  .filter((c) => c.Category === filter.category) // Filter cases by selected category
+              {[...new Set(cases.filter((c) => c.Category === filter.category)
                   .map((c) => c.Subcategory)
-              )].map((subcategory) => (
-                <option key={subcategory} value={subcategory}>
-                  {subcategory}
-                </option>
+                    )].map((subcategory) => (
+                      <option key={subcategory} value={subcategory}>
+                        {subcategory}
+                      </option>
               ))}
             </select>
           )}
         </div>
       )}
+
+      <br />
 
       <div className="card-container">
         {displayedCases.length === 0 ? (
