@@ -48,6 +48,13 @@ body {
     .card-link {
         width: 100%;
     }
+
+    .card-container {
+        justify-content: left;
+        width: 100%;
+        flex-direction: column;
+    }
+    
 }
 
 @media (max-width: 600px) {
@@ -55,9 +62,10 @@ body {
         padding: 30px 20px;
     }
 
-
     .card-container {
         justify-content: left;
+        width: 100%;
+        flex-direction: column;
     }
 
     .card-link {

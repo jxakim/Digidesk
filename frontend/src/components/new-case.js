@@ -64,7 +64,11 @@ const subcategories = {
 
       <div className={`side-menu ${menuOpen ? 'open' : ''}`}>
         <form onSubmit={handleSubmit}>
-          <h2>Lag en ny sak</h2>
+          <div className="menu-header">
+            <h2>Lag en ny sak</h2>
+            <img onClick={toggleMenu} alt='Closing button' src="/close.png" />
+          </div>
+
           <label>
             Tittel
             <input

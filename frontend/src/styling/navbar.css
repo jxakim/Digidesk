@@ -2,7 +2,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-
 #navbar {
   display: flex;
   justify-content: space-between;
@@ -123,7 +122,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 50px;
+    padding: 20px 5%;
     position: relative;
     width: 100%;
     top: 0;

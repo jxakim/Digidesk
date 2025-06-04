@@ -7,6 +7,10 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
 
+  function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilter((prev) => ({
@@ -77,7 +81,7 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
             <option value="">All status</option>
             {[...new Set(cases.map((c) => c.Status))].map((status) => (
               <option key={status} value={status}>
-                {status}
+                {capitalizeFirst(status)}
               </option>
             ))}
           </select>

@@ -12,7 +12,7 @@
 }
 
 .side-menu.open {
-    right: 0; /* Slide in when open */
+    right: 0;
 }
 
 .toggle-menu-button {
@@ -81,4 +81,48 @@ form select {
     border-radius: 5px;
     background-color: white;
     font-size: 1rem;
+}
+
+.menu-header {
+    display: flex;
+    align-items:baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.menu-header img {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    filter: grayscale(30%) brightness(1);
+    transition: .05s;
+    cursor: pointer;
+}
+
+.menu-header img:hover {
+    filter: grayscale(40%) brightness(.8);
+}
+
+@media (max-width: 740px) {
+    .side-menu {
+        width: 100%;
+        right: -100%;
+    }
+
+    .toggle-menu-button {
+        top: 10px;
+        right: 0px;
+    }
+}
+
+@media (max-width: 600px) {
+    .side-menu {
+        width: 100%;
+        right: -100%;
+    }
+
+    .toggle-menu-button {
+        top: 10px;
+        right: 10px;
+    }
 }

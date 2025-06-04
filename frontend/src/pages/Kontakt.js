@@ -37,6 +37,7 @@ function Kontakt() {
           </div>
         </div>
 
+        { /*
 
         <form className="contact-form">
           <label>
@@ -53,6 +54,8 @@ function Kontakt() {
           </label>
           <button type="submit">Send inn sak</button>
         </form>
+
+        */ }
 
       </div>
     </div>

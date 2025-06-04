@@ -126,6 +126,12 @@ select {
         padding: 70px 50px;
         margin: auto;
     }
+
+    button {
+        width: 95%;
+        height: 35px;
+        margin-top: 0px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -134,8 +140,8 @@ select {
     }
 
     .container {
-        padding: 30px 50px;
-        width: 500px;
+        padding: 30px 20px;
+        width: 450px;
     }
 
     .centered_container {
@@ -143,4 +149,11 @@ select {
         padding: 70px 50px;
         margin: auto;
     }
+
+    button {
+        width: 95%;
+        height: 35px;
+        margin-top: 0px;
+    }
+
 }
