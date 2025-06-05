@@ -13,6 +13,7 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
+    console.log(`Filter change: ${name} = ${value}`);
     setFilter((prev) => ({
       ...prev,
       [name]: value,
@@ -31,16 +32,16 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
     const matchesSearch =
       filter.search === '' ||
       c.Name.toLowerCase().includes(filter.search.toLowerCase());
-
+  
     const matchesCategory =
       filter.category === '' || c.Category === filter.category;
-    
+  
     const matchesSubcategory =
       filter.subcategory === '' || c.Subcategory === filter.subcategory;
-
+  
     const matchesStatus =
-      filter.status === '' || c.Status === filter.status;
-
+      filter.status === '' || (Status && c.Status.toLowerCase() === filter.status.toLowerCase());
+  
     return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
   });
 

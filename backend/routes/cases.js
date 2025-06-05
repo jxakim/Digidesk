@@ -1,3 +1,4 @@
+const geoip = require('geoip-lite');
 const express = require('express');
 const router = express.Router();
 const Case = require('../models/Case');
@@ -20,7 +21,12 @@ router.post('/new', Auth, async (req, res) => {
       return res.status(400).send('Name and description are required');
     }
 
+    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const location = geoip.lookup(ipAddress);
+
     console.log('Creating case with name:', Name, 'and description:', Desc);
+    console.log('User IP Address:', ipAddress);
+    console.log('User Location:', location);
     
     try {
       const newCase = new Case({
