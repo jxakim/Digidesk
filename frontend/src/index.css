@@ -23,4 +23,11 @@ body, html {
   height: 100%;
   font-family: 'Inter', sans-serif;
   background-color: #f9f9f9;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .moving-element {
+    transform: none;
+  }
 }
