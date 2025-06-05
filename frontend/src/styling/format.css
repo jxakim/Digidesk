@@ -118,7 +118,7 @@ select {
 
     .container {
         padding: 30px 50px;
-        width: 600px;
+        width: 100%;
     }
 
     .centered_container {
@@ -141,7 +141,7 @@ select {
 
     .container {
         padding: 30px 20px;
-        width: 450px;
+        width: 100%;
     }
 
     .centered_container {
@@ -153,6 +153,11 @@ select {
     button {
         width: 95%;
         height: 35px;
+        margin-top: 0px;
+    }
+
+    .normal-button {
+        width: 100%;
         margin-top: 0px;
     }
 
