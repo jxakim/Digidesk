@@ -13,7 +13,6 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    console.log(`Filter change: ${name} = ${value}`);
     setFilter((prev) => ({
       ...prev,
       [name]: value,

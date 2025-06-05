@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { redirect, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useDropzone } from 'react-dropzone';
 import '../styling/cases.css';
 import '../styling/case.css';
 import "../styling/format.css";
@@ -10,6 +11,7 @@ function Case({ Viewmode }) {
   const { id } = useParams();
   const [caseItem, setCaseItem] = useState(null);
   const [error, setError] = useState(null);
+  const [modalImage, setModalImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     Name: '',
@@ -17,11 +19,34 @@ function Case({ Viewmode }) {
     Status: 'recognized',
     Category: '',
     Subcategory: '',
+    Content: '',
+    Images: [],
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+  const handleImageClick = (imagePath) => {
+    if (imagePath) {
+      setModalImage(imagePath);
+    } else {
+      console.error('Invalid image path:', imagePath);
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file && file instanceof Blob) { // Ensure file is a valid Blob or File
+      const imageURL = URL.createObjectURL(file);
+      setFormData((prev) => ({
+        ...prev,
+        Content: `${prev.Content}<img src="${imageURL}" alt="Uploaded Image" />`, // Embed image in content
+        Images: [...prev.Images, file], // Store the image file
+      }));
+    } else {
+      console.error('Invalid file uploaded:', file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -29,17 +54,24 @@ function Case({ Viewmode }) {
     try {
       setLoading(true);
 
-      const updatedFormData = {
-        ...formData,
-        Updated: new Date().toISOString(),
-      };
+      const updatedFormData = new FormData();
+      updatedFormData.append('Name', formData.Name);
+      updatedFormData.append('Desc', formData.Desc);
+      updatedFormData.append('Status', formData.Status);
+      updatedFormData.append('Category', formData.Category);
+      updatedFormData.append('Subcategory', formData.Subcategory);
+      updatedFormData.append('Updated', new Date().toISOString());
+      formData.Images.forEach((image) => {
+        if (typeof image === 'string') {
+          updatedFormData.append('ExistingImages', image);
+        } else if (image instanceof Blob) {
+          updatedFormData.append('Images', image);
+        }
+      });
 
       const response = await fetch(`/api/cases/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedFormData),
+        body: updatedFormData,
       });
 
       if (response.ok) {
@@ -52,6 +84,7 @@ function Case({ Viewmode }) {
           Category: updatedCase.Category,
           Subcategory: updatedCase.Subcategory,
           Updated: updatedCase.Updated,
+          Images: updatedCase.Images || [],
         });
         navigate(`/admin/home`);
         setLoading(false);
@@ -88,6 +121,8 @@ function Case({ Viewmode }) {
           Status: data.Status || 'recognized',
           Category: data.Category || '',
           Subcategory: data.Subcategory || '',
+          Content: data.Content || '',
+          Images: data.Images || [],
         });
         setLoading(false);
       })
@@ -102,6 +137,12 @@ function Case({ Viewmode }) {
 
   return (
     <>
+      {modalImage && (
+        <div className="image-modal" onClick={() => setModalImage(null)}>
+          <img src={modalImage} alt="Full Size" className="modal-image" />
+        </div>
+      )}
+
       {Viewmode === "admin" ? (
         <div className="case-page">
           <form onSubmit={handleSubmit}>
@@ -123,6 +164,38 @@ function Case({ Viewmode }) {
                 value={formData.Desc}
                 onChange={handleInputChange}
               />
+
+              <label>
+                Last opp bilde
+                <input type="file" accept="image/*" onChange={handleImageUpload} />
+              </label>
+
+              <div className="image-preview">
+                {formData.Images.map((image, index) => {
+                  let imagePath;
+
+                  if (typeof image === 'string') {
+                    imagePath = `http://localhost:3000${image}`;
+                  } else if (image instanceof Blob) {
+
+                    imagePath = URL.createObjectURL(image);
+                  } else {
+                    console.error('Invalid image in Images array:', image);
+                    return null;
+                  }
+
+                  return (
+                    <img
+                      key={index}
+                      src={imagePath}
+                      alt={`Preview ${index}`}
+                      className="image-thumbnail"
+                      onClick={() => handleImageClick(imagePath)}
+                    />
+                  );
+                })}
+              </div>
+
               <p className="case-small">
                 Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
                 Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
@@ -157,6 +230,27 @@ function Case({ Viewmode }) {
               className="case-desc"
               dangerouslySetInnerHTML={{ __html: caseItem.Desc }}
             />
+
+            <div className="image-preview">
+              {caseItem.Images && caseItem.Images.map((image, index) => {
+                const imagePath = typeof image === 'string' ? `http://localhost:3000${image}` : null;
+                if (!imagePath) {
+                  console.error('Invalid image path:', image);
+                  return null;
+                }
+
+                return (
+                  <img
+                    key={index}
+                    src={imagePath}
+                    alt={`Case Image ${index}`}
+                    className="image-thumbnail"
+                    onClick={() => setModalImage(imagePath)}
+                  />
+                );
+              })}
+            </div>
+
             <p className="case-small">
               Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
               Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />

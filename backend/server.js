@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -10,11 +11,15 @@ const cookieParser = require('cookie-parser');
 const Case = require('./models/Case');
 const User = require('./models/User')
 const Auth = require('./middleware/auth');
+const path = require('path');
 
 const app = express();
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const casesRouter = require('./routes/cases');

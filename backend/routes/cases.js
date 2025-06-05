@@ -1,8 +1,15 @@
 const geoip = require('geoip-lite');
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
 const Case = require('../models/Case');
 const Auth = require('../middleware/auth');
+const multer = require('multer');
+const upload = multer({
+  dest: 'uploads/',
+  limits: { fileSize: 50 * 1024 * 1024 },
+});
 
 router.get('/:id', async (req, res) => {
   try {
@@ -48,41 +55,73 @@ router.post('/new', Auth, async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { Name, Desc, Status, Category, Subcategory, Updated } = req.body;
-
+router.put('/:id', upload.array('Images', 10), async (req, res) => {
   try {
-      const updatedCase = await Case.findByIdAndUpdate(
-          id,
-          { Name, Desc, Status, Category, Subcategory, Updated },
-          { new: true }
-      );
+    const { Name, Desc, Status, Category, Subcategory, Updated, ExistingImages } = req.body;
 
-      if (!updatedCase) {
-          return res.status(404).send('Case not found');
-      }
+    const existingImages = Array.isArray(ExistingImages) ? ExistingImages : [ExistingImages];
+    const newImages = req.files.map((file) => `/uploads/${file.filename}`);
+    const allImages = [...existingImages, ...newImages];
 
-      res.status(200).json(updatedCase);
-  } catch (error) {
-      console.error('Error updating case:', error);
-      res.status(500).send('Internal Server Error');
+    const updatedCase = await Case.findByIdAndUpdate(
+      req.params.id,
+      {
+        Name,
+        Desc,
+        Status,
+        Category,
+        Subcategory,
+        Updated,
+        Images: allImages,
+      },
+      { new: true }
+    );
+
+    if (!updatedCase) {
+      return res.status(404).send('Case not found');
+    }
+
+    res.json(updatedCase);
+  } catch (err) {
+    console.error('Error updating case:', err);
+    res.status(500).send('Server error');
   }
 });
 
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    
-    try {
-      const deletedCase = await Case.findByIdAndDelete(id);
-      if (!deletedCase) {
-        return res.status(404).send('Case not found');
-      }
-      res.status(200).send('Case deleted successfully');
-    } catch (err) {
-      console.error('Error deleting case:', err);
-      res.status(500).send('Server error');
+  const { id } = req.params;
+
+  try {
+    const caseItem = await Case.findById(id);
+    if (!caseItem) {
+      return res.status(404).send('Case not found');
     }
+
+    // Remove associated images from the uploads directory
+    if (caseItem.Images && Array.isArray(caseItem.Images)) {
+      caseItem.Images.forEach((imagePath) => {
+        if (typeof imagePath === 'string' && imagePath.trim() !== '') { // Validate imagePath
+          const fullPath = path.join(__dirname, '..', imagePath); // Resolve full path
+          fs.unlink(fullPath, (err) => {
+            if (err) {
+              console.error(`Error deleting file ${fullPath}:`, err);
+            } else {
+              console.log(`Deleted file: ${fullPath}`);
+            }
+          });
+        } else {
+          console.warn(`Invalid image path skipped: ${imagePath}`);
+        }
+      });
+    }
+
+    // Delete the case from the database
+    const deletedCase = await Case.findByIdAndDelete(id);
+    res.status(200).send('Case and associated images deleted successfully');
+  } catch (err) {
+    console.error('Error deleting case:', err);
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;

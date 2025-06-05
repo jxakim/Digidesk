@@ -7,7 +7,8 @@ const Case = new mongoose.Schema({
   Updated: Date,
   Status: { type: String, default: 'recognized', },
   Category: String,
-  Subcategory: String
+  Subcategory: String,
+  Images: [{ type: String }],
 });
 
 module.exports = mongoose.model('cases', Case);
