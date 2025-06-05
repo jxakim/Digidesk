@@ -136,12 +136,12 @@ select {
 
 @media (max-width: 600px) {
     h1 {
-        font-size: 24px;
+        font-size: 26px;
     }
 
     .container {
-        padding: 30px 20px;
-        width: 100%;
+        padding: 20px 20px;
+        width: 95%;
     }
 
     .centered_container {

@@ -66,6 +66,15 @@ body {
 }
 
 @media (max-width: 600px) {
+    .header {
+        font-size: 26px;
+        font-weight: 550;
+        text-align: left;
+        margin: 0px 0;
+        user-select: none;
+        margin-top: 0;
+    }
+
     .cases-container {
         padding: 30px 20px;
     }
