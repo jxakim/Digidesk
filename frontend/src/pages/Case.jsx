@@ -6,6 +6,8 @@ import '../styling/cases.css';
 import '../styling/case.css';
 import "../styling/format.css";
 
+const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
+
 function Case({ Viewmode }) {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -37,12 +39,12 @@ function Case({ Viewmode }) {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file && file instanceof Blob) { // Ensure file is a valid Blob or File
+    if (file && file instanceof Blob) {
       const imageURL = URL.createObjectURL(file);
       setFormData((prev) => ({
         ...prev,
-        Content: `${prev.Content}<img src="${imageURL}" alt="Uploaded Image" />`, // Embed image in content
-        Images: [...prev.Images, file], // Store the image file
+        Content: `${prev.Content}<img src="${imageURL}" alt="Uploaded Image" />`,
+        Images: [...prev.Images, file],
       }));
     } else {
       console.error('Invalid file uploaded:', file);
@@ -175,7 +177,7 @@ function Case({ Viewmode }) {
                   let imagePath;
 
                   if (typeof image === 'string') {
-                    imagePath = `http://localhost:3000${image}`;
+                    imagePath = `${baseUrl}${image}`;
                   } else if (image instanceof Blob) {
 
                     imagePath = URL.createObjectURL(image);
@@ -233,7 +235,7 @@ function Case({ Viewmode }) {
 
             <div className="image-preview">
               {caseItem.Images && caseItem.Images.map((image, index) => {
-                const imagePath = typeof image === 'string' ? `http://localhost:3000${image}` : null;
+                const imagePath = typeof image === 'string' ? `${baseUrl}${image}` : null;
                 if (!imagePath) {
                   console.error('Invalid image path:', image);
                   return null;
