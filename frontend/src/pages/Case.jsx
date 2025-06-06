@@ -6,7 +6,10 @@ import '../styling/cases.css';
 import '../styling/case.css';
 import "../styling/format.css";
 
-const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const baseUrl =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000'
+    : window.location.origin;
 
 function Case({ Viewmode }) {
   const navigate = useNavigate();
