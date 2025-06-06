@@ -6,7 +6,7 @@ import '../styling/cases.css';
 import '../styling/case.css';
 import "../styling/format.css";
 
-const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
+const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 function Case({ Viewmode }) {
   const navigate = useNavigate();

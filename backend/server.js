@@ -3,22 +3,25 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const Case = require('./models/Case');
 const User = require('./models/User')
 const Auth = require('./middleware/auth');
-const path = require('path');
 
 const app = express();
+
+// Middleware
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
@@ -26,13 +29,12 @@ const casesRouter = require('./routes/cases');
 app.use('/api/cases', casesRouter);
 
 // Connect to MongoDB
-try {
-  mongoose.connect(process.env.MONGO_URI);
-  console.log('MongoDB connected');
-} catch (err) {
-  console.error(err.message);
-  throw err;
-}
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1);
+  });
 
 
 // Define the Case schema
