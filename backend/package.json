@@ -19,6 +19,7 @@
     "geoip-lite": "^1.4.10",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
-    "multer": "^2.0.1"
+    "multer": "^2.0.1",
+    "socket.io": "^4.8.1"
   }
 }

@@ -21,10 +21,21 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
   };
 
   useEffect(() => {
-    fetch('/api/cases')
-      .then((res) => res.json())
-      .then(setCases)
-      .catch((err) => console.error('Error fetching cases:', err));
+    const fetchCases = async () => {
+      try {
+        console.log("Fetching cases..");
+        const res = await fetch('/api/cases');
+        const data = await res.json();
+        setCases(data);
+      } catch (err) {
+        console.error('Error fetching cases:', err);
+      }
+    };
+
+    fetchCases();
+
+    const interval = setInterval(fetchCases, 60000);
+    return () => clearInterval(interval);
   }, [Refresh]);
 
   const filteredCases = cases.filter((c) => {
