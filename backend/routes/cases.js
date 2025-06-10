@@ -88,6 +88,33 @@ router.put('/:id', upload.array('Images', 10), async (req, res) => {
   }
 });
 
+router.delete('/images/:id', async (req, res) => {
+  const { id } = req.params;
+  const { imagePath } = req.body;
+
+  try {
+    const caseItem = await Case.findById(id);
+    if (!caseItem) {
+      return res.status(404).send('Case not found');
+    }
+
+    caseItem.Images = caseItem.Images.filter((img) => img !== imagePath);
+    await caseItem.save();
+
+    const fullPath = path.join(__dirname, '..', imagePath);
+    fs.unlink(fullPath, (err) => {
+      if (err) {
+        console.error(`Error deleting file ${fullPath}:`, err);
+      }
+    });
+
+    res.status(200).send('Image deleted successfully');
+  } catch (err) {
+    console.error('Error deleting image:', err);
+    res.status(500).send('Server error');
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 

@@ -32,6 +32,7 @@ function Case({ Viewmode }) {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleImageClick = (imagePath) => {
     if (imagePath) {
       setModalImage(imagePath);
@@ -105,6 +106,40 @@ function Case({ Viewmode }) {
       console.error('Feil ved oppdatering av sak:', error);
       alert('En uventet feil oppstod: ' + error.message);
       setLoading(false);
+    }
+  };
+
+  const handleDeleteImage = async (index) => {
+    const imageToDelete = formData.Images[index];
+
+    if (typeof imageToDelete === 'string') {
+      try {
+        const response = await fetch(`/api/cases/images/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ imagePath: imageToDelete }),
+        });
+  
+        if (response.ok) {
+          setFormData((prev) => {
+            const updatedImages = [...prev.Images];
+            updatedImages.splice(index, 1);
+            return { ...prev, Images: updatedImages };
+          });
+        } else {
+          console.error('Failed to delete image:', await response.text());
+        }
+      } catch (err) {
+        console.error('Error deleting image:', err);
+      }
+    } else {
+      setFormData((prev) => {
+        const updatedImages = [...prev.Images];
+        updatedImages.splice(index, 1);
+        return { ...prev, Images: updatedImages };
+      });
     }
   };
 
@@ -182,21 +217,32 @@ function Case({ Viewmode }) {
                   if (typeof image === 'string') {
                     imagePath = `${baseUrl}${image}`;
                   } else if (image instanceof Blob) {
-
                     imagePath = URL.createObjectURL(image);
                   } else {
-                    console.error('Invalid image in Images array:', image);
+                    // console.log('Invalid image in Images array:', image);
                     return null;
                   }
 
                   return (
-                    <img
-                      key={index}
-                      src={imagePath}
-                      alt={`Preview ${index}`}
-                      className="image-thumbnail"
-                      onClick={() => handleImageClick(imagePath)}
-                    />
+                    <div key={index} className="image-container">
+                      <img
+                        src={imagePath}
+                        alt={`Preview ${index}`}
+                        className="image-thumbnail"
+                        onClick={() => setModalImage(imagePath)}
+                      />
+
+                      <button
+                        type="button"
+                        className="delete-button"
+                        onClick={() => handleDeleteImage(index)}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" className="delete-icon" >
+                          <line x1="3" y1="3" x2="20" y2="20" stroke="white" strokeWidth="4" strokeLinecap="round" />
+                          <line x1="20" y1="3" x2="3" y2="20" stroke="white" strokeWidth="4" strokeLinecap="round" />
+                        </svg>
+                      </button>
+                    </div>
                   );
                 })}
               </div>
