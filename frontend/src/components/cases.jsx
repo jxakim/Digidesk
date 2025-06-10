@@ -39,7 +39,8 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
       filter.subcategory === '' || c.Subcategory === filter.subcategory;
   
     const matchesStatus =
-      filter.status === '' || (Status && c.Status.toLowerCase() === filter.status.toLowerCase());
+      (filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase())) &&
+      (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
   
     return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
   });
