@@ -26,8 +26,6 @@ services:
     networks:
       - mern-net
     restart: always
-    volumes:
-      - ./backend/uploads:/app/uploads
 
   frontend:
     build: ./frontend
@@ -52,7 +50,6 @@ services:
       - ./nginx/digidesk.one.conf:/etc/nginx/conf.d/digidesk.one.conf
       - ./nginx/ssl:/etc/nginx/ssl
       - ./frontend/build:/usr/share/nginx/html
-      - ./backend/uploads:/usr/share/nginx/html/uploads
     depends_on:
       - frontend
       - backend
