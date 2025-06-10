@@ -45,7 +45,7 @@ const subcategories = {
       });
 
       if (response.ok) {
-        setFormData({ Name: '', Desc: '', Status: '', Category: '', Subcategory: '' });
+        setFormData({ Name: '', Desc: '', Status: 'recognized', Category: '', Subcategory: '' });
         setMenuOpen(false);
         console.log('Case added successfully');
         if (onCaseAdded) onCaseAdded();
