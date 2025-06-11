@@ -8,7 +8,7 @@ const Auth = require('../middleware/auth');
 const multer = require('multer');
 const upload = multer({
   dest: 'uploads/',
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 400 * 1024 * 1024 },
 });
 
 router.get('/:id', async (req, res) => {
