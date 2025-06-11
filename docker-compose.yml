@@ -26,6 +26,8 @@ services:
     networks:
       - mern-net
     restart: always
+    volumes:
+      - ./backend/uploads:/app/uploads
 
   frontend:
     build: ./frontend
