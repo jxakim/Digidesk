@@ -61,6 +61,19 @@ p {
     background-color: #1a5bbf;
 }
 
+.checkbox-container {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.checkbox {
+    width: 13px;
+    height: 13px;
+    cursor: pointer;
+    margin: 5px 0px 0px 3px;
+}
+
 select {
     width: 100%;
     padding: 10px;

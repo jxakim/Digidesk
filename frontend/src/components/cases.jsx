@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
 
-function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
+function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
 
@@ -52,8 +52,11 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter }) {
     const matchesStatus =
       (filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase())) &&
       (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
+
+    const matchesArchived =
+      ArchiveView || !c.Archived;
   
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus;
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived;
   });
 
   const displayedCases = Crop

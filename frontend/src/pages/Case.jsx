@@ -26,6 +26,7 @@ function Case({ Viewmode }) {
     Subcategory: '',
     Content: '',
     Images: [],
+    Archived: false,
   });
 
   const handleInputChange = (e) => {
@@ -74,6 +75,7 @@ function Case({ Viewmode }) {
           updatedFormData.append('Images', image);
         }
       });
+      updatedFormData.append('Archived', formData.Archived);
 
       const response = await fetch(`/api/cases/${id}`, {
         method: 'PUT',
@@ -91,6 +93,7 @@ function Case({ Viewmode }) {
           Subcategory: updatedCase.Subcategory,
           Updated: updatedCase.Updated,
           Images: updatedCase.Images || [],
+          Archived: updatedCase.Archived || false,
         });
         navigate(`/admin/home`);
         setLoading(false);
@@ -163,6 +166,7 @@ function Case({ Viewmode }) {
           Subcategory: data.Subcategory || '',
           Content: data.Content || '',
           Images: data.Images || [],
+          Archived: data.Archived || false,
         });
         setLoading(false);
       })
@@ -251,7 +255,21 @@ function Case({ Viewmode }) {
                 Opprettet: {new Date(caseItem.Created).toLocaleString()}<br />
                 Sist oppdatert: {new Date(caseItem.Updated).toLocaleString()}<br />
                 <br />
-                Status: {capitalizeFirst(formData.Status)}
+                Status: {capitalizeFirst(formData.Status)}<br />
+                <span className="checkbox-container">
+                  Arkivert:
+                  <input
+                    className="checkbox"
+                    type="checkbox"
+                    checked={formData.Archived}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        Archived: e.target.checked,
+                      }))
+                    }
+                  />
+                </span>
               </p>
             </div>
 

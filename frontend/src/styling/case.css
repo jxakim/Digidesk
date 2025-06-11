@@ -71,6 +71,7 @@
 .case-small {
     font-size: 0.9rem;
     color: #666;
+    line-height: 1.5;
 }
 
 .case-category {

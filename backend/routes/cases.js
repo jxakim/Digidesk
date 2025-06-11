@@ -43,7 +43,7 @@ router.post('/new', Auth, async (req, res) => {
         Updated: new Date(),
         Status,
         Category,
-        Subcategory
+        Subcategory,
       });
 
       console.log('New case object:', newCase);
@@ -57,7 +57,7 @@ router.post('/new', Auth, async (req, res) => {
 
 router.put('/:id', upload.array('Images', 10), async (req, res) => {
   try {
-    const { Name, Desc, Status, Category, Subcategory, Updated, ExistingImages } = req.body;
+    const { Name, Desc, Status, Category, Subcategory, Updated, ExistingImages, Archived } = req.body;
 
     const existingImages = Array.isArray(ExistingImages) ? ExistingImages : [ExistingImages];
     const newImages = req.files.map((file) => `/uploads/${file.filename}`);
@@ -73,6 +73,7 @@ router.put('/:id', upload.array('Images', 10), async (req, res) => {
         Subcategory,
         Updated,
         Images: allImages,
+        Archived,
       },
       { new: true }
     );

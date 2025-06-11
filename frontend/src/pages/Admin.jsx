@@ -18,7 +18,7 @@ function Admin() {
         <NewCase onCaseAdded={triggerRefresh}/>
       </div>
 
-      <Cases Header="Konfigurering: Alle saker" Config={true} Refresh={refreshFlag} Filter/>
+      <Cases Header="Konfigurering: Alle saker" Config={true} Refresh={refreshFlag} Filter ArchiveView/>
     </>
   );  
 }   
