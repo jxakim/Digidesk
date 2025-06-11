@@ -286,7 +286,6 @@ function Case({ Viewmode }) {
               {caseItem.Images && caseItem.Images.map((image, index) => {
                 const imagePath = typeof image === 'string' ? `${baseUrl}${image}` : null;
                 if (!imagePath) {
-                  console.error('Invalid image path:', image);
                   return null;
                 }
 
