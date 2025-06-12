@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import '../styling/format.css';
 import '../styling/new-case.css';
 
-function NewCase({ onCaseAdded }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+function NewCase({ onCaseAdded, isOpen, onToggle }) {
   const [formData, setFormData] = useState({
     Name: '',
     Desc: '',
@@ -24,10 +23,6 @@ const subcategories = {
     Programvare: ['Oppdateringer', 'Feilmeldinger', "Office 365", 'Windows', 'Annen programvare'],
 };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -46,7 +41,7 @@ const subcategories = {
 
       if (response.ok) {
         setFormData({ Name: '', Desc: '', Status: 'recognized', Category: '', Subcategory: '' });
-        setMenuOpen(false);
+        onToggle();
         console.log('Case added successfully');
         if (onCaseAdded) onCaseAdded();
       } else {
@@ -60,91 +55,92 @@ const subcategories = {
 
   return (
     <>
-      <button className="normal-button" onClick={toggleMenu}>Lag ny sak</button>
+      <button className="normal-button" onClick={onToggle}>Lag ny sak</button>
+      {isOpen && (
+        <div className={`side-menu open`}>
+          <form onSubmit={handleSubmit}>
+            <div className="menu-header">
+              <h2>Lag en ny sak</h2>
+              <img onClick={onToggle} alt='Closing button' src="/close.png" />
+            </div>
 
-      <div className={`side-menu ${menuOpen ? 'open' : ''}`}>
-        <form onSubmit={handleSubmit}>
-          <div className="menu-header">
-            <h2>Lag en ny sak</h2>
-            <img onClick={toggleMenu} alt='Closing button' src="/close.png" />
-          </div>
-
-          <label>
-            Tittel
-            <input
-              type="text"
-              maxLength={ 40 }
-              name="Name"
-              value={formData.Name}
-              onChange={handleInputChange}
-              required
-            />
-          </label>
-
-          <label>
-            Beskrivelse
-            <textarea
-              name="Desc"
-              value={formData.Desc}
-              onChange={handleInputChange}
-              required
-            />
-          </label>
-
-          <label>
-            Status
-            <select
-              name="Status"
-              value={formData.Status}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="recognized">Recognized</option>
-              <option value="in-progress">In-Progress</option>
-              <option value="solved">Solved</option>
-            </select>
-          </label>
-
-          <label>
-            Hovedkategori
-            <select
-              name="Category"
-              value={formData.Category}
-              onChange={handleInputChange}
-              required
-            >
-              <option value="" disabled hidden>Velg kategori</option>
-              {categories.map((sub) => (
-                  <option key={sub} value={sub}>
-                    {sub}
-                  </option>
-              ))}
-            </select>
-          </label>
-
-          {formData.Category && (
             <label>
-              Underkategori
+              Tittel
+              <input
+                type="text"
+                maxLength={ 40 }
+                name="Name"
+                value={formData.Name}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+
+            <label>
+              Beskrivelse
+              <textarea
+                name="Desc"
+                value={formData.Desc}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+
+            <label>
+              Status
               <select
-                name="Subcategory"
-                value={formData.Subcategory}
+                name="Status"
+                value={formData.Status}
                 onChange={handleInputChange}
                 required
               >
-                <option value="" disabled hidden>Velg underkategori</option>
-                {subcategories[formData.Category].map((sub) => (
-                  <option key={sub} value={sub}>
-                    {sub}
-                  </option>
+                <option value="recognized">Recognized</option>
+                <option value="in-progress">In-Progress</option>
+                <option value="solved">Solved</option>
+              </select>
+            </label>
+
+            <label>
+              Hovedkategori
+              <select
+                name="Category"
+                value={formData.Category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="" disabled hidden>Velg kategori</option>
+                {categories.map((sub) => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
                 ))}
               </select>
             </label>
-          )}
+
+            {formData.Category && (
+              <label>
+                Underkategori
+                <select
+                  name="Subcategory"
+                  value={formData.Subcategory}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="" disabled hidden>Velg underkategori</option>
+                  {subcategories[formData.Category].map((sub) => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
 
 
-          <button type="submit" className="normal-button">Add Case</button>
-        </form>
-      </div>
+            <button type="submit" className="normal-button">Add Case</button>
+          </form>
+        </div>
+      )}
     </>
   );
 }

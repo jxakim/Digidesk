@@ -28,6 +28,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const casesRouter = require('./routes/cases');
 app.use('/api/cases', casesRouter);
 
+const usersRouter = require('./routes/users');
+app.use('/api/users', usersRouter);
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
@@ -43,6 +46,12 @@ app.get('/api/cases', async (req, res) => {
   res.json(allCases);
 });
 
+// Define the Case schema
+app.get('/api/users', async (req, res) => {
+  const allUsers = await Case.find({});
+  res.json(allUsers);
+});
+
 // Login post api
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
@@ -50,7 +59,7 @@ app.post('/api/login', async (req, res) => {
   const user = await User.findOne({ username });
   if (!user) return res.status(401).send('Invalid user');
 
-  const match = bcrypt.compare(password, user.password);
+  const match = bcrypt.compare(password, user.Password);
   if (!match) return res.status(401).send('Invalid');
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
