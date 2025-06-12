@@ -6,7 +6,7 @@ function Card(props) {
   }
 
   return (
-    <div className={`card ${props.Archived ? 'archived' : ''}`}>
+    <div className={`card`}>
       {props.Archived && <h2 className="archivedTitle">ARKIVERT</h2>}
       <h3>{capitalizeFirst(props.Name)}</h3>
       <p>{capitalizeFirst(props.Desc)}</p>

@@ -49,6 +49,10 @@ body {
 }
 
 @media (max-width: 740px) {
+    .card-wrapper {
+        width: 100%;
+    }
+
     .card-link {
         width: 100%;
     }
