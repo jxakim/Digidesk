@@ -7,16 +7,15 @@ const Auth = require('../middleware/auth');
 
 router.post('/new', Auth, async (req, res) => {
     const { Username, Password, Group } = req.body;
-    
-    if (!Name || !Desc) {
-      return res.status(400).send('Username and password are required');
+    if (!Username || !Password || !Group) {
+      return res.status(400).send(Username, Password, Group);
     }
     
     try {
       const newUser = new User({
-        Username,
-        Password,
-        Group,
+        username: Username,
+        password: Password,
+        group: Group || 'Default',
       });
 
       console.log('New user object:', newUser);
@@ -27,3 +26,5 @@ router.post('/new', Auth, async (req, res) => {
       res.status(500).send('Server error');
     }
 });
+
+module.exports = router;

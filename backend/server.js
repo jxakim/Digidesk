@@ -9,7 +9,8 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const Case = require('./models/Case');
-const User = require('./models/User')
+const User = require('./models/User');
+const Group = require('./models/Group');
 const Auth = require('./middleware/auth');
 
 const app = express();
@@ -31,6 +32,10 @@ app.use('/api/cases', casesRouter);
 const usersRouter = require('./routes/users');
 app.use('/api/users', usersRouter);
 
+const groupsRouter = require('./routes/groups');
+app.use('/api/groups', groupsRouter);
+
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
@@ -46,10 +51,16 @@ app.get('/api/cases', async (req, res) => {
   res.json(allCases);
 });
 
-// Define the Case schema
+// Define the User schema
 app.get('/api/users', async (req, res) => {
-  const allUsers = await Case.find({});
+  const allUsers = await User.find({});
   res.json(allUsers);
+});
+
+// Define the Group schema
+app.get('/api/groups', async (req, res) => {
+  const allGroups = await Group.find({});
+  res.json(allGroups);
 });
 
 // Login post api
@@ -59,7 +70,7 @@ app.post('/api/login', async (req, res) => {
   const user = await User.findOne({ username });
   if (!user) return res.status(401).send('Invalid user');
 
-  const match = bcrypt.compare(password, user.Password);
+  const match = bcrypt.compare(password, user.password);
   if (!match) return res.status(401).send('Invalid');
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });

@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const User = new mongoose.Schema({
-  Username: String,
-  Pasword: String,
-  Group: String,
+  username: String,
+  password: String,
+  group: String,
 });
 
 
-userSchema.pre('save', async function (next) {
+User.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
