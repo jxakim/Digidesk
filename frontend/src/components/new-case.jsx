@@ -39,7 +39,10 @@ const subcategories = {
         body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
+    if (response.status === 403) {
+      const error = await response.json();
+      alert(error.error);
+    } else if (response.ok) {
         setFormData({ Name: '', Desc: '', Status: 'recognized', Category: '', Subcategory: '' });
         onToggle();
         console.log('Case added successfully');

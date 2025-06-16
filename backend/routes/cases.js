@@ -5,6 +5,7 @@ const path = require('path');
 const router = express.Router();
 const Case = require('../models/Case');
 const Auth = require('../middleware/auth');
+const checkPermission = require('../middleware/checkPermission');
 const multer = require('multer');
 const upload = multer({
   dest: 'uploads/',
@@ -21,7 +22,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/new', Auth, async (req, res) => {
+router.post('/new', Auth, checkPermission("create-cases"), async (req, res) => {
     const { Name, Desc, Status, Category, Subcategory } = req.body;
     
     if (!Name || !Desc) {
@@ -51,11 +52,12 @@ router.post('/new', Auth, async (req, res) => {
       res.status(201).json(newCase);
     } catch (err) {
       console.error('Error creating case:', err);
+      req.errors.push(err.message || 'Server error');
       res.status(500).send('Server error');
     }
 });
 
-router.put('/:id', upload.array('Images', 10), async (req, res) => {
+router.put('/:id', checkPermission("edit-cases"), upload.array('Images', 10), async (req, res) => {
   try {
     const { Name, Desc, Status, Category, Subcategory, Updated, ExistingImages, Archived } = req.body;
 
@@ -89,7 +91,7 @@ router.put('/:id', upload.array('Images', 10), async (req, res) => {
   }
 });
 
-router.delete('/images/:id', async (req, res) => {
+router.delete('/images/:id', checkPermission("edit-cases"), async (req, res) => {
   const { id } = req.params;
   const { imagePath } = req.body;
 
@@ -116,7 +118,7 @@ router.delete('/images/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkPermission("delete-cases"), async (req, res) => {
   const { id } = req.params;
 
   try {

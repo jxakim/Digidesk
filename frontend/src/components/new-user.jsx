@@ -5,7 +5,7 @@ function NewUser({ isOpen, onToggle }) {
   const [formData, setFormData] = useState({
     Username: '',
     Password: '',
-    Group: 'Default',
+    Group: '',
   });
   const [groups, setGroups] = useState([]); // State to store available groups
 
@@ -53,7 +53,7 @@ function NewUser({ isOpen, onToggle }) {
         console.error('Failed to add user:', errorText);
       }
     } catch (error) {
-      console.alert('Error adding user:', error);
+      console.error('Error adding user:', error);
     }
   };
 
@@ -105,7 +105,7 @@ function NewUser({ isOpen, onToggle }) {
               >
                 <option value="">Velg en gruppe</option>
                 {groups.map((group) => (
-                  <option key={group._id} value={group.name}>
+                  <option key={group._id} value={group._id}>
                     {group.name}
                   </option>
                 ))}

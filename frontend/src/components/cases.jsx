@@ -2,23 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
+import { Trash } from 'lucide-react';
 
 function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
-
-  function capitalizeFirst(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilter((prev) => ({
-      ...prev,
-      [name]: value,
-      ...(name === 'category' && { subcategory: '' }),
-    }));
-  };
+  const [permissions, setPermissions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCases = async () => {
@@ -37,6 +27,47 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
     const interval = setInterval(fetchCases, 60000);
     return () => clearInterval(interval);
   }, [Refresh]);
+  
+  useEffect(() => {
+    fetch('/api/users/permissions', {
+      credentials: 'include',
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error('Failed to fetch permissions');
+        }
+      })
+      .then(data => {
+        setPermissions(data);
+      })
+      .catch(() => {
+        setPermissions([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+  
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  const hasPermission = (permission) => {
+    return permissions.includes(permission);
+  };
+
+  function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilter((prev) => ({
+      ...prev,
+      [name]: value,
+      ...(name === 'category' && { subcategory: '' }),
+    }));
+  };
 
   const filteredCases = cases.filter((c) => {
     const matchesSearch =
@@ -141,18 +172,31 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
 
               {Config && (
                 <div className="button-container">
-                  <Link to={`/cases/edit/${caseItem._id}`} className="card-link">
-                    <button className="attention-button">
-                      Rediger sak
-                    </button>
-                  </Link>
+                  {hasPermission('edit-cases') && (
+                    <Link to={`/cases/edit/${caseItem._id}`} className="card-link">
+                      <button className="attention-button">
+                        Rediger sak
+                      </button>
+                     </Link>
+                  )}
 
-                  <button
-                    className="warn-button"
-                    onClick={() => handleDelete(caseItem._id)}
-                  >
-                    Slett sak
-                  </button>
+                  {hasPermission('bin-cases') && (
+                    <button
+                      className="warn-button"
+                      onClick={() => handleDelete(caseItem._id)}
+                    >
+                      <Trash size={16} fill="currentColor" color="white" />
+                    </button>
+                  )}
+
+                  {hasPermission('delete-cases') && (
+                    <button
+                      className="warn-button"
+                      onClick={() => handleDelete(caseItem._id)}
+                    >
+                      Slett sak
+                    </button>
+                  )}
                 </div>
               )}
             </div>

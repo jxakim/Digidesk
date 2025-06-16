@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styling/format.css';
 
-const predefinedPermissions = [
+export const predefinedPermissions = [
   'create-cases',
   'create-users',
   'create-groups',
