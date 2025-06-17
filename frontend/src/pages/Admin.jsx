@@ -65,7 +65,15 @@ function Admin() {
         )}
       </div>
 
-      <Cases Header="Konfigurering: Alle saker" Config={true} Refresh={refreshFlag} Filter ArchiveView/>
+      <Cases Header="Alle saker" Config={true} Refresh={refreshFlag} Filter/>
+      
+      {hasPermission('view-archived') && (
+        <Cases Header="Arkiverte saker" ArchiveView={true} Config={true} Refresh={refreshFlag} />
+      )}
+
+      {hasPermission('view-trashed') && (
+        <Cases Header="Søppelkurv" Trashed={true} Config={true} Refresh={refreshFlag} ArchiveView={true} />
+      )}
     </>
   );  
 }   

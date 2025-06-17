@@ -12,6 +12,7 @@ const Case = require('./models/Case');
 const User = require('./models/User');
 const Group = require('./models/Group');
 const Auth = require('./middleware/auth');
+const checkPermission = require('./middleware/checkPermission');
 
 const app = express();
 
@@ -46,19 +47,19 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 // Define the Case schema
-app.get('/api/cases', async (req, res) => {
+app.get('/api/cases', Auth, async (req, res) => {
   const allCases = await Case.find({});
   res.json(allCases);
 });
 
 // Define the User schema
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', Auth, async (req, res) => {
   const allUsers = await User.find({});
   res.json(allUsers);
 });
 
 // Define the Group schema
-app.get('/api/groups', async (req, res) => {
+app.get('/api/groups', Auth, async (req, res) => {
   const allGroups = await Group.find({});
   res.json(allGroups);
 });

@@ -10,15 +10,10 @@ const checkPermission = (requiredPermission) => {
       const user = await User.findById(req.user.id).populate({
         path: 'group',
       });
-      
-      console.log('User:', user); // Debugging
-      console.log('Group:', user.group); // Debugging
 
       if (!user || !user.group) {
         return res.status(403).json({ error: 'Access denied: No group assigned' });
       }
-
-      console.log('Group Permissions:', user.group.permissions); // Debugging
 
       if (!Array.isArray(user.group.permissions)) {
         return res.status(500).json({ error: 'Permissions field is not an array or is undefined' });

@@ -23,6 +23,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/new', Auth, checkPermission("create-cases"), async (req, res) => {
+    console.log(checkPermission("create-cases"));
     const { Name, Desc, Status, Category, Subcategory } = req.body;
     
     if (!Name || !Desc) {
@@ -57,7 +58,26 @@ router.post('/new', Auth, checkPermission("create-cases"), async (req, res) => {
     }
 });
 
-router.put('/:id', checkPermission("edit-cases"), upload.array('Images', 10), async (req, res) => {
+// This toggles the trash state
+router.post('/:id/bin', Auth, checkPermission("edit-cases"), async (req, res) => {
+  try {
+    const { bin } = req.body;
+    const caseItem = await Case.findById(req.params.id);
+    if (!caseItem) {
+      return res.status(404).send('Case not found');
+    }
+
+    caseItem.Trashed = !caseItem.Trashed;
+    await caseItem.save();
+
+    res.status(200).send('Case moved to bin successfully');
+  } catch (err) {
+    console.error('Error moving case to trash:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+router.put('/:id', Auth, checkPermission("edit-cases"), upload.array('Images', 10), async (req, res) => {
   try {
     const { Name, Desc, Status, Category, Subcategory, Updated, ExistingImages, Archived } = req.body;
 
@@ -91,7 +111,7 @@ router.put('/:id', checkPermission("edit-cases"), upload.array('Images', 10), as
   }
 });
 
-router.delete('/images/:id', checkPermission("edit-cases"), async (req, res) => {
+router.delete('/images/:id', Auth, checkPermission("edit-cases"), async (req, res) => {
   const { id } = req.params;
   const { imagePath } = req.body;
 
@@ -118,7 +138,7 @@ router.delete('/images/:id', checkPermission("edit-cases"), async (req, res) => 
   }
 });
 
-router.delete('/:id', checkPermission("delete-cases"), async (req, res) => {
+router.delete('/:id', Auth, checkPermission("delete-cases"), async (req, res) => {
   const { id } = req.params;
 
   try {

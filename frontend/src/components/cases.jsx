@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
-import { Trash } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
-function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
+function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Trashed }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
   const [permissions, setPermissions] = useState([]);
@@ -85,9 +85,12 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
       (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
 
     const matchesArchived =
-      ArchiveView || !c.Archived;
+      (ArchiveView ? c.Archived : !c.Archived);
+
+    const matchesTrashed =
+      (Trashed ? c.Trashed : !c.Trashed);
   
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived;
+    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived && matchesTrashed;
   });
 
   const displayedCases = Crop
@@ -112,6 +115,27 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
       }
     } catch (err) {
       console.error('Error deleting case:', err);
+    }
+  };
+
+  const handleBin = async (id) => {
+    try {
+      const res = await fetch(`/api/cases/${id}/bin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (res.ok) {
+        setCases((prev) => prev.filter((c) => c._id !== id));
+      } else {
+        const text = await res.text();
+        console.error('Failed to bin case:', text);
+      }
+    } catch (err) {
+      console.error('Error trashing case:', err);
     }
   };
 
@@ -172,21 +196,30 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView }) {
 
               {Config && (
                 <div className="button-container">
-                  {hasPermission('edit-cases') && (
+                  {hasPermission('edit-cases') && !(caseItem.Trashed) && (
                     <Link to={`/cases/edit/${caseItem._id}`} className="card-link">
                       <button className="attention-button">
                         Rediger sak
                       </button>
-                     </Link>
+                    </Link>
                   )}
 
                   {hasPermission('bin-cases') && (
-                    <button
-                      className="warn-button"
-                      onClick={() => handleDelete(caseItem._id)}
-                    >
-                      <Trash size={16} fill="currentColor" color="white" />
-                    </button>
+                    !(caseItem.Trashed) ? (
+                      <button
+                        className="warn-button"
+                        onClick={() => handleBin(caseItem._id)}
+                      >
+                        <Trash2 size={16} fill="currentColor" color="white" />
+                      </button>
+                    ) : (
+                      <button
+                        className="attention-button"
+                        onClick={() => handleBin(caseItem._id)}
+                      >
+                        Fjern fra søppelkurv
+                      </button>
+                    )
                   )}
 
                   {hasPermission('delete-cases') && (

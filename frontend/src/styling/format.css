@@ -172,9 +172,14 @@ select {
         margin-top: 0px;
     }
 
+    .normal-button, .warn-button, .attention-button {
+        padding: 0px 8px;
+        font-size: 12px;
+    }
+
     .normal-button {
         width: 100%;
-        margin-top: 0px;
+        margin-top: 5px;
     }
 
 }

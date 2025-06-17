@@ -10,6 +10,7 @@ const Case = new mongoose.Schema({
   Subcategory: String,
   Images: [{ type: String }],
   Archived: { type: Boolean, default: false },
+  Trashed: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('cases', Case);

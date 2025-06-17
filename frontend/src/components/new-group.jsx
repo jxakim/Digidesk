@@ -2,10 +2,19 @@ import React, { useState } from 'react';
 import '../styling/format.css';
 
 export const predefinedPermissions = [
+  'view-archived',
+  'view-trashed',
+  'view-users',
+  'view-groups',
+
   'create-cases',
   'create-users',
   'create-groups',
+
+  'edit-users',
+  'edit-groups',
   'edit-cases',
+  
   'delete-cases',
   'bin-cases',
   'archive-cases',
