@@ -10,14 +10,12 @@ function Navbar() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/verify', {
-      credentials: 'include',
-    })
+    fetch('/api/verify', { credentials: 'include' })
       .then(res => {
         if (res.ok) {
           setIsAuthenticated(true);
         } else {
-          setIsAuthenticated(false);
+          setIsAuthenticated(false); // User is not authenticated
         }
       })
       .catch(() => setIsAuthenticated(false))

@@ -13,12 +13,21 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        console.log("Fetching cases..");
-        const res = await fetch('/api/cases');
+        const res = await fetch('/api/cases', { credentials: 'include' });
+        if (res.status === 401) {
+          console.error('User is not authenticated');
+          return;
+        }
+        if (!res.ok) {
+          console.error('Failed to fetch cases:', res.statusText);
+          setCases([]);
+          return;
+        }
         const data = await res.json();
-        setCases(data);
+        setCases(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Error fetching cases:', err);
+        setCases([]);
       }
     };
 
@@ -29,23 +38,37 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
   }, [Refresh]);
   
   useEffect(() => {
-    fetch('/api/users/permissions', {
-      credentials: 'include',
-    })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
+    const fetchPermissions = async () => {
+      try {
+        const res = await fetch('/api/users/permissions', {
+          credentials: 'include',
+        });
+
+        if (res.status === 401) {
+          // User is not authenticated, handle gracefully
+          setPermissions([]); // Clear permissions
+          setLoading(false); // Stop loading
+          return; // Stop further processing
+        }
+
+        if (!res.ok) {
           throw new Error('Failed to fetch permissions');
         }
-      })
-      .then(data => {
-        setPermissions(data);
-      })
-      .catch(() => {
-        setPermissions([]);
-      })
-      .finally(() => setLoading(false));
+
+        const data = await res.json();
+        setPermissions(data || []); // Set permissions if data exists
+      } catch (err) {
+        if (err.message !== 'Failed to fetch permissions') {
+          // Suppress logging for expected errors
+          console.warn('Error fetching permissions:', err.message);
+        }
+        setPermissions([]); // Clear permissions on error
+      } finally {
+        setLoading(false); // Ensure loading is stopped
+      }
+    };
+
+    fetchPermissions();
   }, []);
   
   if (loading) {
@@ -69,29 +92,31 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
     }));
   };
 
-  const filteredCases = cases.filter((c) => {
-    const matchesSearch =
-      filter.search === '' ||
-      c.Name.toLowerCase().includes(filter.search.toLowerCase());
-  
-    const matchesCategory =
-      filter.category === '' || c.Category === filter.category;
-  
-    const matchesSubcategory =
-      filter.subcategory === '' || c.Subcategory === filter.subcategory;
-  
-    const matchesStatus =
-      (filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase())) &&
-      (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
+  const filteredCases = Array.isArray(cases)
+    ? cases.filter((c) => {
+        const matchesSearch =
+          filter.search === '' ||
+          c.Name.toLowerCase().includes(filter.search.toLowerCase());
 
-    const matchesArchived =
-      (ArchiveView ? c.Archived : !c.Archived);
+        const matchesCategory =
+          filter.category === '' || c.Category === filter.category;
 
-    const matchesTrashed =
-      (Trashed ? c.Trashed : !c.Trashed);
-  
-    return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived && matchesTrashed;
-  });
+        const matchesSubcategory =
+          filter.subcategory === '' || c.Subcategory === filter.subcategory;
+
+        const matchesStatus =
+          (filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase())) &&
+          (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
+
+        const matchesArchived =
+          (ArchiveView ? c.Archived : !c.Archived);
+
+        const matchesTrashed =
+          (Trashed ? c.Trashed : !c.Trashed);
+
+        return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived && matchesTrashed;
+      })
+    : [];
 
   const displayedCases = Crop
     ? filteredCases.slice(0, Crop.amount ?? 3)

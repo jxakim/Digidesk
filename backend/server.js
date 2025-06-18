@@ -47,7 +47,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 // Define the Case schema
-app.get('/api/cases', Auth, async (req, res) => {
+app.get('/api/cases', async (req, res) => {
   const allCases = await Case.find({});
   res.json(allCases);
 });
@@ -78,7 +78,7 @@ app.post('/api/login', async (req, res) => {
 
   res.cookie('token', token, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'Strict',
     maxAge: 3600000
   });
@@ -92,6 +92,12 @@ app.get('/api/verify', Auth, (req, res) => {
 
 app.get('/api/health', (req, res) => {
   res.status(200).send('OK');
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
 const PORT = process.env.PORT || 5000;

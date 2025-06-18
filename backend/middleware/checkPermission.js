@@ -4,7 +4,9 @@ const checkPermission = (requiredPermission) => {
   return async (req, res, next) => {
     try {
       if (!req.user) {
-        return res.status(403).json({ error: 'Access denied: User not authenticated' });
+        // User is not authenticated
+        console.warn('User not authenticated'); // Log as a warning
+        return res.status(401).json({ error: 'User not authenticated' }); // Return 401 instead of 403
       }
 
       const user = await User.findById(req.user.id).populate({
