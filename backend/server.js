@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const Case = require('./models/Case');
 const User = require('./models/User');
@@ -15,27 +17,40 @@ const Auth = require('./middleware/auth');
 const checkPermission = require('./middleware/checkPermission');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
 
-// Middleware
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json({ limit: '100mb' }));
 app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('A user disconnected:', socket.id);
+  });
+});
+
 // Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const casesRouter = require('./routes/cases');
-app.use('/api/cases', casesRouter);
+app.use('/api/cases', casesRouter(io));
 
 const usersRouter = require('./routes/users');
 app.use('/api/users', usersRouter);
 
 const groupsRouter = require('./routes/groups');
 app.use('/api/groups', groupsRouter);
-
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -100,5 +115,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = 5000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

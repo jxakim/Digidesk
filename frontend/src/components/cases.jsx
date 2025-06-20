@@ -1,41 +1,110 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import CaseCard from './cards/case-card';
 import '../styling/cases.css';
-import { Trash2 } from 'lucide-react';
+import { Trash, Trash2 } from 'lucide-react';
+import { io } from 'socket.io-client';
+
+const baseUrl =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000'
+    : window.location.origin;
+
+// Connect to the WebSocket server
+export const socket = io(baseUrl, {
+  withCredentials: true,
+});
 
 function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Trashed }) {
   const [cases, setCases] = useState([]);
   const [filter, setFilter] = useState({ search: '', status: '', category: '', subcategory: '' });
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [binLoading, setBinLoading] = useState(false);
+
+  const filteredCases = useMemo(() => {
+    return cases.filter((c) => {
+      const matchesSearch = filter.search === '' || c.Name.toLowerCase().includes(filter.search.toLowerCase());
+      const matchesCategory = filter.category === '' || c.Category === filter.category;
+      const matchesSubcategory = filter.subcategory === '' || c.Subcategory === filter.subcategory;
+      const matchesStatus = filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase());
+      const matchesGlobalStatus = !Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase());
+      const matchesArchiveView = ArchiveView ? c.Archived : !c.Archived;
+      const matchesTrashed = Trashed ? c.Trashed : !c.Trashed;
+
+      return [
+        matchesSearch,
+        matchesCategory,
+        matchesSubcategory,
+        matchesStatus,
+        matchesGlobalStatus,
+        matchesArchiveView,
+        matchesTrashed,
+      ].every(Boolean);
+    });
+  }, [cases, filter, Status, ArchiveView, Trashed]);
 
   useEffect(() => {
     const fetchCases = async () => {
       try {
         const res = await fetch('/api/cases', { credentials: 'include' });
-        if (res.status === 401) {
-          console.error('User is not authenticated');
-          return;
-        }
-        if (!res.ok) {
-          console.error('Failed to fetch cases:', res.statusText);
-          setCases([]);
-          return;
-        }
+        if (!res.ok) throw new Error('Failed to fetch cases');
         const data = await res.json();
         setCases(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Error fetching cases:', err);
-        setCases([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCases();
 
-    const interval = setInterval(fetchCases, 60000);
-    return () => clearInterval(interval);
-  }, [Refresh]);
+    // Listen for real-time updates
+    socket.on('caseUpdated', (updatedCase) => {
+      setCases((prevCases) => {
+        const exists = prevCases.some((c) => c._id === updatedCase._id);
+        if (!exists) return prevCases;
+        return prevCases.map((c) =>
+          c._id === updatedCase._id ? updatedCase : c
+        );
+      });
+    });
+
+    socket.on('caseTrashed', (trashedCase) => {
+      setCases((prevCases) => {
+        const exists = prevCases.some((c) => c._id === trashedCase._id);
+        if (!exists) return prevCases;
+
+        return prevCases.map((c) =>
+          c._id === trashedCase._id ? { ...c, Trashed: trashedCase.Trashed } : c
+        );
+      });
+    });
+
+    socket.on('caseDeleted', (deletedCase) => {
+      setCases((prevCases) => {
+        const exists = prevCases.some((c) => c._id === deletedCase._id);
+        if (!exists) return prevCases;
+    
+        return prevCases.filter((c) => c._id !== deletedCase._id); 
+      });
+    });
+
+    socket.on('caseCreated', (newCase) => {
+      setCases((prevCases) => {
+        const exists = prevCases.some((c) => c._id === newCase._id);
+        if (exists) return prevCases;
+    
+        return [...prevCases, newCase];
+      });
+    });
+
+    return () => {
+      socket.off('caseUpdated');
+    };
+
+  }, []);
   
   useEffect(() => {
     const fetchPermissions = async () => {
@@ -45,10 +114,9 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
         });
 
         if (res.status === 401) {
-          // User is not authenticated, handle gracefully
-          setPermissions([]); // Clear permissions
-          setLoading(false); // Stop loading
-          return; // Stop further processing
+          setPermissions([]);
+          setLoading(false);
+          return;
         }
 
         if (!res.ok) {
@@ -56,15 +124,14 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
         }
 
         const data = await res.json();
-        setPermissions(data || []); // Set permissions if data exists
+        setPermissions(data || []);
       } catch (err) {
         if (err.message !== 'Failed to fetch permissions') {
-          // Suppress logging for expected errors
           console.warn('Error fetching permissions:', err.message);
         }
-        setPermissions([]); // Clear permissions on error
+        setPermissions([]);
       } finally {
-        setLoading(false); // Ensure loading is stopped
+        setLoading(false)
       }
     };
 
@@ -92,32 +159,6 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
     }));
   };
 
-  const filteredCases = Array.isArray(cases)
-    ? cases.filter((c) => {
-        const matchesSearch =
-          filter.search === '' ||
-          c.Name.toLowerCase().includes(filter.search.toLowerCase());
-
-        const matchesCategory =
-          filter.category === '' || c.Category === filter.category;
-
-        const matchesSubcategory =
-          filter.subcategory === '' || c.Subcategory === filter.subcategory;
-
-        const matchesStatus =
-          (filter.status === '' || (c.Status && c.Status.toLowerCase() === filter.status.toLowerCase())) &&
-          (!Status || (c.Status && c.Status.toLowerCase() === Status.toLowerCase()));
-
-        const matchesArchived =
-          (ArchiveView ? c.Archived : !c.Archived);
-
-        const matchesTrashed =
-          (Trashed ? c.Trashed : !c.Trashed);
-
-        return matchesSearch && matchesCategory && matchesSubcategory && matchesStatus && matchesArchived && matchesTrashed;
-      })
-    : [];
-
   const displayedCases = Crop
     ? filteredCases.slice(0, Crop.amount ?? 3)
     : filteredCases;
@@ -144,6 +185,7 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
   };
 
   const handleBin = async (id) => {
+    setBinLoading(true);
     try {
       const res = await fetch(`/api/cases/${id}/bin`, {
         method: 'POST',
@@ -154,13 +196,20 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
       });
 
       if (res.ok) {
-        setCases((prev) => prev.filter((c) => c._id !== id));
+        const updatedCase = await res.json();
+        setCases((prevCases) =>
+          prevCases.map((c) =>
+            c._id === id ? updatedCase : c
+          )
+        );
       } else {
         const text = await res.text();
         console.error('Failed to bin case:', text);
       }
     } catch (err) {
       console.error('Error trashing case:', err);
+    } finally {
+      setBinLoading(false);
     }
   };
 
@@ -229,23 +278,23 @@ function Cases({ Crop, Header, Config, Refresh, Status, Filter, ArchiveView, Tra
                     </Link>
                   )}
 
-                  {hasPermission('bin-cases') && (
-                    !(caseItem.Trashed) ? (
-                      <button
-                        className="warn-button"
-                        onClick={() => handleBin(caseItem._id)}
-                      >
-                        <Trash2 size={16} fill="currentColor" color="white" />
-                      </button>
-                    ) : (
-                      <button
-                        className="attention-button"
-                        onClick={() => handleBin(caseItem._id)}
-                      >
-                        Fjern fra søppelkurv
-                      </button>
-                    )
-                  )}
+              {hasPermission('bin-cases') && !caseItem.Archived && (
+                !(caseItem.Trashed) ? (
+                  <button
+                    className="warn-button"
+                    onClick={() => handleBin(caseItem._id)}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                ) : (
+                  <button
+                    className="attention-button"
+                    onClick={() => handleBin(caseItem._id)}
+                  >
+                    <Trash size={16} />
+                  </button>
+                )
+              )}
 
                   {hasPermission('delete-cases') && (
                     <button

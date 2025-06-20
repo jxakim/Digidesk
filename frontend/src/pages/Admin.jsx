@@ -72,7 +72,7 @@ function Admin() {
       )}
 
       {hasPermission('view-trashed') && (
-        <Cases Header="Søppelkurv" Trashed={true} Config={true} Refresh={refreshFlag} ArchiveView={true} />
+        <Cases Header="Søppelkurv" Trashed={true} Config={true} Refresh={refreshFlag} />
       )}
     </>
   );  

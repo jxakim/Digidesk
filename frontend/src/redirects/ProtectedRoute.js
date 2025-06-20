@@ -22,8 +22,6 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading) return <div>Loading...</div>;
 
-  console.log('ProtectedRoute: isAuthenticated:', isAuthenticated);
-
   return isAuthenticated ? children : <Navigate to="/admin" />;
 };
 
