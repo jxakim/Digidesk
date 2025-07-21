@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../styling/format.css';
-import '../styling/new-case.css';
+import '../../styling/format.css';
+import '../../styling/new-case.css';
 
 function NewCase({ onCaseAdded, isOpen, onToggle }) {
   const [formData, setFormData] = useState({

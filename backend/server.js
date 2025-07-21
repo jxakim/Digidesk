@@ -98,7 +98,16 @@ app.post('/api/login', async (req, res) => {
     maxAge: 3600000
   });
 
+  console.log(`User ${user.username} logged in successfully`);
+  console.log(password);
+
   res.status(200).json({ message: 'Logged in successfully' });
+});
+
+// Logout post api
+app.post('/api/logout', (req, res) => {
+  res.clearCookie('token');
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
 app.get('/api/verify', Auth, (req, res) => {

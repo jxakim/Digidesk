@@ -10,6 +10,7 @@ import Kontakt from './pages/Kontakt';
 import Problemer from './pages/Problemer';
 import Case from './pages/Case';
 import Admin from './pages/Admin';
+import Users from './pages/Users';
 
 import ProtectedRoute from './redirects/ProtectedRoute';
 import LoginRedirect from './redirects/LoginRedirect';
@@ -35,16 +36,27 @@ root.render(
           }
         />
 
-        <Route path="/kontakt" element={<Kontakt />} />
-        <Route path="/problemer" element={<Problemer />} />
-        <Route path="/cases/:id" element={<Case />} />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/cases/edit/:id"
           element={
             <ProtectedRoute>
               <Case Viewmode="admin" />
             </ProtectedRoute>
-          } />
+          }
+        />
+
+        <Route path="/kontakt" element={<Kontakt />} />
+        <Route path="/problemer" element={<Problemer />} />
+        <Route path="/cases/:id" element={<Case />} />
       </Routes>
     </Router>
   </React.StrictMode>

@@ -26,7 +26,7 @@ const seed = async () => {
   const adminUser = new User({
     username: 'admin',
     password,
-    group: adminGroup._id, // Associate the user with the Admin group
+    group: adminGroup._id,
   });
 
   await adminUser.save();
@@ -37,4 +37,4 @@ const seed = async () => {
 seed().catch(err => {
   console.error('Seed error:', err);
   process.exit(1);
-});
+});  

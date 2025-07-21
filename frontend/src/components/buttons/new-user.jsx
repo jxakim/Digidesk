@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styling/format.css';
+import '../../styling/format.css';
 
 function NewUser({ isOpen, onToggle }) {
   const [formData, setFormData] = useState({

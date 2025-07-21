@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styling/format.css';
+import '../../styling/format.css';
 
 export const predefinedPermissions = [
   'view-archived',
@@ -25,12 +25,6 @@ function NewGroup({ isOpen, onToggle }) {
     Name: '',
   });
   const [selectedPermissions, setSelectedPermissions] = useState([]);
-
-  const handleAddPermission = (permission) => {
-    if (!selectedPermissions.includes(permission)) {
-      setSelectedPermissions((prev) => [...prev, permission]);
-    }
-  };
 
   const handleRemovePermission = (permission) => {
     setSelectedPermissions((prev) => prev.filter((p) => p !== permission));

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import "../styling/format.css";
 import Cases from '../components/cases';
-import NewCase from '../components/new-case';
-import NewUser from '../components/new-user';
-import NewGroup from '../components/new-group';
+import NewCase from '../components/buttons/new-case';
+import NewUser from '../components/buttons/new-user';
+import NewGroup from '../components/buttons/new-group';
+import NewButton from '../components/buttons/new-button';
 // import Request from '../components/request';
 
 function Admin() {
@@ -63,6 +64,16 @@ function Admin() {
         {hasPermission('create-groups') && (
           <NewGroup isOpen={openMenu === 'newGroup'} onToggle={() => handleMenuToggle('newGroup')} />
         )}
+
+        <br/>
+        
+        {hasPermission('view-users') && (
+          <NewButton header="Se alle brukere" color="grey" redirect="/admin/users" />
+        )}
+
+        {hasPermission('view-groups') && (
+          <NewButton header="Se alle grupper" color="grey" redirect="/admin/groups" />
+        )}
       </div>
 
       <Cases Header="Alle saker" Config={true} Refresh={refreshFlag} Filter/>
@@ -75,7 +86,7 @@ function Admin() {
         <Cases Header="Søppelkurv" Trashed={true} Config={true} Refresh={refreshFlag} />
       )}
     </>
-  );  
-}   
+  );
+}
 
 export default Admin;
